@@ -1,0 +1,19 @@
+{
+  "name": "saasjs",
+  "version": "1.0.0",
+  "description": "SaaS Center for manage EY infra",
+  "main": "saasjs-run",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vgulaev/saasjs.git"
+  },
+  "author": "vgulaev@yandex.ru",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/vgulaev/saasjs/issues"
+  },
+  "homepage": "https://github.com/vgulaev/saasjs#readme"
+}
