@@ -1,7 +1,12 @@
 const fs = require('fs');
+// const path = require('path');
 
 function compile(filename) {
-  var fileout = filename + '.out';
+  // var data = path.parse(filename);
+  var fileout = filename.replace('.htmljs', '.html.js').replace('/source/', '/compiled/');
+
+  // console.log(fileout);
+  // return 0;
 
   function append(msg) {
     fs.appendFileSync(fileout, msg);
@@ -31,4 +36,4 @@ function compile(filename) {
   console.log('Hello!!!');
 }
 
-compile('content/index.html.js');
+compile('content/htmljs/source/index.htmljs');

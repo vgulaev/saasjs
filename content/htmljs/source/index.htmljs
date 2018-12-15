@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<script type="text/javascript" src="js/index.js"></script>
+<head>
+  <title></title>
+</head>
+<body>
+  for (var i=0; i < 10; i++) {
+  <div>
+    <span>It is ${i} Hello!!!</span>
+  </div>
+  }
+</body>
+</html>
