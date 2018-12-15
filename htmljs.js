@@ -1,39 +1,43 @@
 const fs = require('fs');
-// const path = require('path');
+const path = require('path');
 
-function compile(filename) {
-  // var data = path.parse(filename);
+exports.compile = function (filename) {
+  var parsed = path.parse(filename);
+  // console.log(parsed);
   var fileout = filename.replace('.htmljs', '.html.js').replace('/source/', '/compiled/');
-
-  // console.log(fileout);
-  // return 0;
 
   function append(msg) {
     fs.appendFileSync(fileout, msg);
   }
 
   fs.writeFileSync(fileout, '');
-  append('function build(req) { \nvar res = "";\n');
+  // ${parsed["name"]
+  append(`exports.build = function (req) { \nvar res = "";\n`);
 
-  var lineReader = require('readline').createInterface({
-    input: fs.createReadStream(filename)
-  });
+  var content = fs.readFileSync(filename, 'utf-8');
+  content.split('\n').map(function (line) {
+      var newline = line;
+      if ("<" == line.trim()[0]) {
+        newline = "res +=`" + line + "\\n`;"
+      }
+      append(newline + "\n");
+    });
 
-  lineReader.on('line', function (line) {
-    var newline = line;
-    if ("<" == line.trim()[0]) {
-      newline = "res +=`" + line + "\\n`;"
-    }
-    append(newline + "\n");
-    console.log('Line from file:', line);
-  });
+  append('return res;\n');
+  append('}\n');
+  // var lineReader = require('readline').createInterface({
+  //   input: fs.createReadStream(filename)
+  // });
 
-  lineReader.on('close', function () {
-    append('return res;\n');
-    append('}\n');
-    append('\nconsole.log(build(1));\n');
-  });
-  console.log('Hello!!!');
+  // lineReader.on('line', function (line) {
+  //   // console.log('Line from file:', line);
+  // });
+
+  // lineReader.on('close', function () {
+  //   append('return res;\n');
+  //   append('}\n');
+  //   // append('\nconsole.log(build(1));\n');
+  // });
 }
 
-compile('content/htmljs/source/index.htmljs');
+// exports.compile('content/htmljs/source/index.htmljs');

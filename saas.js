@@ -1,6 +1,8 @@
 const http = require('http');
 const url = require('url');
 const path = require('path');
+const fs = require('fs');
+
 
 function empty_res(res) {
   res.writeHead(404, {
@@ -20,6 +22,19 @@ function debug(res, msg) {
   res.end(msg);
 }
 
+function memo_type(type) {
+  var types = {
+    '.htmljs': 'text/html; charset=UTF-8',
+    '.ico': 'image/x-icon',
+    '.js': 'application/javascript'
+  };
+  if (type in types) {
+    return types[type];
+  } else {
+    return 'text/plain; charset=UTF-8';
+  }
+}
+
 function respond(req, res) {
   var myURL = url.parse(req.url);
   var pathname = myURL["pathname"];
@@ -29,17 +44,20 @@ function respond(req, res) {
 
   var parsed = path.parse(pathname);
 
-  console.log(parsed);
-
-  res.writeHead(200, {
-    'Content-Type': "text/plain; charset=UTF-8"
-  });
-
-
   if (req.method === 'POST') {
   } else if (req.method === 'GET') {
-    require(`./content/htmljs/`)
-    res.end("Hello word!!!");
+    res.writeHead(200, {
+      'Content-Type': memo_type(parsed['ext'])
+    });
+    var content = "";
+    if ('.htmljs' == parsed['ext']) {
+      content = require(`./content/htmljs/compiled/${parsed["name"]}.html`).build(res);
+    } else if ('.js' == parsed['ext']) {
+      content = fs.readFileSync(`content/js/${parsed["base"]}`);
+    } else if ('.ico' == parsed['ext']) {
+      content = fs.readFileSync(`content/img/${parsed["base"]}`);
+    }
+    res.end(content);
   } else {
     res.end("Hello word!!!");
   }

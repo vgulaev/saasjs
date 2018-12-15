@@ -5,9 +5,20 @@
   <title></title>
 </head>
 <body>
+  const uuidv4 = require('uuid/v4');
+  var s = ['https://accounts.google.com/o/oauth2/v2/auth?',
+ 'client_id=754362560347-dvcsg4arl8fnvl42v633b0q8fmekhk4k.apps.googleusercontent.com&',
+ 'response_type=code&',
+ 'scope=openid%20email&',
+ 'redirect_uri=http://localhost:2806/oauthcallback.srv&',
+ 'state=security_token%3D138r5719ru3e1%26url%3Dhttps://oauth2-login-demo.example.com/myHome&',
+ // 'login_hint=jsmith@example.com&',
+ //'openid.realm=example.com&',
+ 'nonce=0394852-3190485-2490358&'].join('');
+  <a href="${s}">Authorize</a>
   for (var i=0; i < 10; i++) {
   <div>
-    <span>It is ${i} Hello!!!</span>
+    <span>It is ${uuidv4()} Hello!!!</span>
   </div>
   }
 </body>
