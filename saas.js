@@ -1,8 +1,11 @@
 const http = require('http');
+const https = require('https');
 const url = require('url');
 const path = require('path');
 const fs = require('fs');
 
+var config = new (require('./config').config)();
+var env = {};
 
 function empty_res(res) {
   res.writeHead(404, {
@@ -35,36 +38,49 @@ function memo_type(type) {
   }
 }
 
+function static(req, res) {
+  res.writeHead(200, {
+    'Content-Type': memo_type(env.parsed['ext'])
+  });
+  var content = '';
+  if ('.htmljs' == env.parsed['ext']) {
+    var filename = `./content/htmljs/compiled/${env.parsed['name']}.html`;
+    delete require.cache[require.resolve(filename)];
+    var data = {env: env};
+    content = require(filename).build(res, data);
+  } else if ('.js' == env.parsed['ext']) {
+    content = fs.readFileSync(`content/js/${env.parsed['base']}`);
+  } else if ('.ico' == env.parsed['ext']) {
+    content = fs.readFileSync(`content/img/${env.parsed['base']}`);
+  } else if ('.srv' == env.parsed['ext']) {
+  } else {
+    content = 'Strange things happens';
+  }
+  res.end(content);
+}
+
 function respond(req, res) {
   var myURL = url.parse(req.url);
-  var pathname = myURL["pathname"];
+  var pathname = myURL['pathname'];
   if ('/' == pathname) {
     pathname = '/index.htmljs'
   }
 
-  var parsed = path.parse(pathname);
-
+  env.parsed = path.parse(pathname);
   if (req.method === 'POST') {
   } else if (req.method === 'GET') {
-    res.writeHead(200, {
-      'Content-Type': memo_type(parsed['ext'])
-    });
-    var content = "";
-    if ('.htmljs' == parsed['ext']) {
-      content = require(`./content/htmljs/compiled/${parsed["name"]}.html`).build(res);
-    } else if ('.js' == parsed['ext']) {
-      content = fs.readFileSync(`content/js/${parsed["base"]}`);
-    } else if ('.ico' == parsed['ext']) {
-      content = fs.readFileSync(`content/img/${parsed["base"]}`);
+    if ('oauthcallback' == env.parsed['name']) {
+      require('./custom-oauth').oauthcallback(myURL, res, env);
+    } else {
+      static(req, res);
     }
-    res.end(content);
   } else {
     res.end("Hello word!!!");
   }
 };
 
 const server = http.createServer((req, res) => {
-  log(req.url);
+  log(`${req.method} :: ${req.url}`);
   try {
     respond(req, res);
   } catch (err) {

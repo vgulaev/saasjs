@@ -12,7 +12,7 @@ exports.compile = function (filename) {
 
   fs.writeFileSync(fileout, '');
   // ${parsed["name"]
-  append(`exports.build = function (req) { \nvar res = "";\n`);
+  append(`exports.build = function (req, data) { \nvar res = "";\n`);
 
   var content = fs.readFileSync(filename, 'utf-8');
   content.split('\n').map(function (line) {

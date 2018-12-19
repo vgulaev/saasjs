@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/vgulaev/saasjs/issues"
   },
-  "homepage": "https://github.com/vgulaev/saasjs#readme"
+  "homepage": "https://github.com/vgulaev/saasjs#readme",
+  "dependencies": {
+    "jsonwebtoken": "^8.4.0"
+  }
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<script type="text/javascript" src="js/index.js"></script>
+<!-- script type="text/javascript" src="js/index.js"></script-->
 <head>
   <title></title>
 </head>
@@ -11,11 +11,20 @@
  'response_type=code&',
  'scope=openid%20email&',
  'redirect_uri=http://localhost:2806/oauthcallback.srv&',
- 'state=security_token%3D138r5719ru3e1%26url%3Dhttps://oauth2-login-demo.example.com/myHome&',
+ //'state=security_token%3D138r5719ru3e1%26url%3Dhttps://oauth2-login-demo.example.com/myHome&',
  // 'login_hint=jsmith@example.com&',
  //'openid.realm=example.com&',
  'nonce=0394852-3190485-2490358&'].join('');
+  if (undefined == data.env.email) {
+    <div>Noname</div>
+} else {
+    <div>${data.env.email}</div>
+}
   <a href="${s}">Authorize</a>
+  <div>
+    <button onclick="location.reload();">reload</button>
+  </div>
+  <span>new seeed</span>
   for (var i=0; i < 10; i++) {
   <div>
     <span>It is ${uuidv4()} Hello!!!</span>
