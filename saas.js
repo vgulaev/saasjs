@@ -4,9 +4,11 @@ const url = require('url');
 const path = require('path');
 const fs = require('fs');
 
+const db = new (require('./easy-db').db)();
 var config = new (require('./config').config)();
 var env = {
-  rootpath: __dirname
+  rootpath: __dirname,
+  db: db
 };
 
 function empty_res(res) {
@@ -61,12 +63,25 @@ function static(req, res) {
   res.end(content);
 }
 
+function checkSessionId(req, res) {
+  var sessionId = req.headers.cookie;
+  if (req.headers.cookie.length > 32) {
+    if (sessionId.indexOf('s=') != -1) {
+      sessionId = sessionId.replace('s=', '');
+      // console.log('checkSessionId: ' + sessionId);
+      res.sessionId = sessionId;
+    }
+  }
+}
+
 function respond(req, res) {
   var myURL = url.parse(req.url);
   var pathname = myURL['pathname'];
   if ('/' == pathname) {
     pathname = '/index.htmljs'
   }
+
+  checkSessionId(req, res);
 
   env.parsed = path.parse(pathname);
   if (req.method === 'POST') {

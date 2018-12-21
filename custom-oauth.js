@@ -51,7 +51,8 @@ exports.oauthcallback = function (myURL, res, env) {
       var decoded = jwt.decode(parsed['id_token']);
       if (['valentin.gulyaev@aurea.com'].indexOf(decoded['email']) != -1) {
         var sessionId = uuidv4();
-        db.data.session[sessionId] = {email: decoded['email']};
+        db.data.session[sessionId] = {email: decoded['email'],
+          created_at: expires.toISOString()};
         db.save();
         expires.setDate(expires.getDate() + 30);
         res.writeHead(302, {

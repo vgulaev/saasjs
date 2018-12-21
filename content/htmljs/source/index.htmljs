@@ -7,10 +7,12 @@ const {oauthlink} = require(`${data.env.rootpath}/custom-oauth`);
 </head>
 <body>
   <div>Welcome to SaaS Center</div>
-  if (undefined == data.env.email) {
+  if (undefined == res.sessionId) {
     <div>For performe action please <a href="${oauthlink()}">Authorize with you Google account</a> </div>
   } else {
-    <div>Hello dear ${data.env.email}</div>
+    <div>Hello dear ${data.env.db.data.session[res.sessionId].email} you can going to
+      <a href="dashboard.htmljs">dashboard</a>
+    </div>
   }
   <div>
     <button onclick="location.reload();">reload</button>

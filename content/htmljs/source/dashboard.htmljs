@@ -1,0 +1,18 @@
+if (undefined == res.sessionId) {
+  var content = require('../compiled/unauthorized.html.js').build(res, data);
+  return content;
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SaaS DashBoard</title>
+</head>
+<body>
+  <div>
+    <a href="weekly_costs.htmljs">Weekly costs</a>
+  </div>
+  <div>
+    <a href="jira_tickets.htmljs">Jira tickets</a>
+  </div>
+</body>
+</html>

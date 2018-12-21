@@ -1,0 +1,17 @@
+if (undefined == res.sessionId) {
+  var content = require('../compiled/unauthorized.html.js').build(res, data);
+  return content;
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Weekly costs</title>
+</head>
+<script type="text/javascript" src="weekly_costs.js"></script>
+<body>
+  <div>
+    <a href="dashboard.htmljs">Dashboard</a>
+  </div>
+  <div id="report"></div>
+</body>
+</html>

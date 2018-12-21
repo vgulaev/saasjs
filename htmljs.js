@@ -12,18 +12,18 @@ exports.compile = function (filename) {
 
   fs.writeFileSync(fileout, '');
   // ${parsed["name"]
-  append(`exports.build = function (req, data) { \nvar res = "";\n`);
+  append(`exports.build = function (res, data) { \nvar content = "";\n`);
 
   var content = fs.readFileSync(filename, 'utf-8');
   content.split('\n').map(function (line) {
       var newline = line;
       if ("<" == line.trim()[0]) {
-        newline = "res +=`" + line + "\\n`;"
+        newline = "content +=`" + line + "\\n`;"
       }
       append(newline + "\n");
     });
 
-  append('return res;\n');
+  append('return content;\n');
   append('}\n');
   // var lineReader = require('readline').createInterface({
   //   input: fs.createReadStream(filename)
