@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<!-- script type="text/javascript" src="js/index.js"></script-->
+<head>
+  <title>SaaS center</title>
+</head>
+<body>
+  <div>
+    <a href="index.htmljs">Index</a>
+  </div>
+  <div>
+    <span>You not allowed to work here</span>
+  </div>
+</body>
+</html>

@@ -5,7 +5,9 @@ const path = require('path');
 const fs = require('fs');
 
 var config = new (require('./config').config)();
-var env = {};
+var env = {
+  rootpath: __dirname
+};
 
 function empty_res(res) {
   res.writeHead(404, {

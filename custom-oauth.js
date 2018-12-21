@@ -1,8 +1,22 @@
 const https = require('https');
 const url = require('url');
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const uuidv4 = require('uuid/v4');
 
+const db = new (require('./easy-db').db)();
 var config = new (require('./config').config)();
+
+exports.oauthlink = function () {
+  return ['https://accounts.google.com/o/oauth2/v2/auth?',
+ `client_id=${config['oauth2']['client_id']}&`,
+ 'response_type=code&',
+ 'scope=openid%20email&',
+ 'redirect_uri=http://localhost:2806/oauthcallback.srv&',
+ //'state=security_token%3D138r5719ru3e1%26url%3Dhttps://oauth2-login-demo.example.com/myHome&',
+ // 'login_hint=jsmith@example.com&',
+ //'openid.realm=example.com&',
+ 'nonce=0394852-3190485-2490358&'].join('');
+}
 
 exports.oauthcallback = function (myURL, res, env) {
   var params = new url.URLSearchParams(myURL['query']);
@@ -32,13 +46,25 @@ exports.oauthcallback = function (myURL, res, env) {
     _res.on('data', function (chunk) {
       data += chunk;
     }).on('end', () => {
+      var expires = new Date;
       var parsed = JSON.parse(data);
       var decoded = jwt.decode(parsed['id_token']);
-      env.email = decoded['email'];
-      res.writeHead(302, {
-        'Location': 'index.htmljs'
-      });
-      res.end();
+      if (['valentin.gulyaev@aurea.com'].indexOf(decoded['email']) != -1) {
+        var sessionId = uuidv4();
+        db.data.session[sessionId] = {email: decoded['email']};
+        db.save();
+        expires.setDate(expires.getDate() + 30);
+        res.writeHead(302, {
+          'Location': 'index.htmljs',
+          'Set-Cookie': `s=${sessionId}; expires=${expires.toGMTString()}`
+        });
+        res.end();
+      } else {
+        res.writeHead(302, {
+          'Location': 'unauthorized.htmljs',
+        });
+        res.end();
+      }
     });
   });
 

@@ -1,34 +1,22 @@
+const {oauthlink} = require(`${data.env.rootpath}/custom-oauth`);
 <!DOCTYPE html>
 <html>
 <!-- script type="text/javascript" src="js/index.js"></script-->
 <head>
-  <title></title>
+  <title>SaaS center</title>
 </head>
 <body>
-  const uuidv4 = require('uuid/v4');
-  var s = ['https://accounts.google.com/o/oauth2/v2/auth?',
- 'client_id=754362560347-dvcsg4arl8fnvl42v633b0q8fmekhk4k.apps.googleusercontent.com&',
- 'response_type=code&',
- 'scope=openid%20email&',
- 'redirect_uri=http://localhost:2806/oauthcallback.srv&',
- //'state=security_token%3D138r5719ru3e1%26url%3Dhttps://oauth2-login-demo.example.com/myHome&',
- // 'login_hint=jsmith@example.com&',
- //'openid.realm=example.com&',
- 'nonce=0394852-3190485-2490358&'].join('');
+  <div>Welcome to SaaS Center</div>
   if (undefined == data.env.email) {
-    <div>Noname</div>
-} else {
-    <div>${data.env.email}</div>
-}
-  <a href="${s}">Authorize</a>
+    <div>For performe action please <a href="${oauthlink()}">Authorize with you Google account</a> </div>
+  } else {
+    <div>Hello dear ${data.env.email}</div>
+  }
   <div>
     <button onclick="location.reload();">reload</button>
   </div>
-  <span>new seeed</span>
-  for (var i=0; i < 10; i++) {
   <div>
-    <span>It is ${uuidv4()} Hello!!!</span>
+    <span>Page generatet at: ${(new Date).toISOString()}</span>
   </div>
-  }
 </body>
 </html>
