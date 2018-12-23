@@ -1,7 +1,9 @@
 if (undefined == res.sessionId) {
-  var content = require('../compiled/unauthorized.html.js').build(res, data);
-  return content;
-}
+  require('../compiled/unauthorized.html.js').build(res, data).then(function (content) {
+    console.log(content);
+    resolve(content);
+  });
+} else {
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,5 +16,10 @@ if (undefined == res.sessionId) {
   <div>
     <a href="jira_tickets.htmljs">Jira tickets</a>
   </div>
+  <div>
+    <span>Sees: ${res.sessionId}</span>
+  </div>
 </body>
 </html>
+resolve(content);
+}

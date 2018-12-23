@@ -3,7 +3,6 @@ const url = require('url');
 const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
 
-const db = new (require('./easy-db').db)();
 var config = new (require('./config').config)();
 
 exports.oauthlink = function () {
@@ -19,6 +18,7 @@ exports.oauthlink = function () {
 }
 
 exports.oauthcallback = function (myURL, res, env) {
+  var db = env.db;
   var params = new url.URLSearchParams(myURL['query']);
   var post_data = new url.URLSearchParams();
   post_data.set('code', params.get('code'));

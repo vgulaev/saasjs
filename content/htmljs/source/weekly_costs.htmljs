@@ -1,7 +1,9 @@
 if (undefined == res.sessionId) {
-  var content = require('../compiled/unauthorized.html.js').build(res, data);
-  return content;
-}
+  require('../compiled/unauthorized.html.js').build(res, data).then(function (content) {
+    console.log(content);
+    resolve(content);
+  });
+} else {
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,3 +17,5 @@ if (undefined == res.sessionId) {
   <div id="report"></div>
 </body>
 </html>
+resolve(content);
+}

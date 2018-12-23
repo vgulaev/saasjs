@@ -51,25 +51,31 @@ function static(req, res) {
     var filename = `./content/htmljs/compiled/${env.parsed['name']}.html`;
     delete require.cache[require.resolve(filename)];
     var data = {env: env};
-    content = require(filename).build(res, data);
-  } else if ('.js' == env.parsed['ext']) {
-    content = fs.readFileSync(`content/js/${env.parsed['base']}`);
-  } else if ('.ico' == env.parsed['ext']) {
-    content = fs.readFileSync(`content/img/${env.parsed['base']}`);
-  } else if ('.srv' == env.parsed['ext']) {
+    require(filename).build(res, data).then(function (content) {
+      res.end(content);
+    });
   } else {
-    content = 'Strange things happens';
+    if ('.js' == env.parsed['ext']) {
+      content = fs.readFileSync(`content/js/${env.parsed['base']}`);
+    } else if ('.ico' == env.parsed['ext']) {
+      content = fs.readFileSync(`content/img/${env.parsed['base']}`);
+    } else if ('.srv' == env.parsed['ext']) {
+    } else {
+      content = 'Strange things happens';
+    }
+    res.end(content);
   }
-  res.end(content);
 }
 
-function checkSessionId(req, res) {
+function setSessionId(req, res) {
   var sessionId = req.headers.cookie;
+  if (sessionId == undefined) return;
   if (req.headers.cookie.length > 32) {
     if (sessionId.indexOf('s=') != -1) {
       sessionId = sessionId.replace('s=', '');
-      // console.log('checkSessionId: ' + sessionId);
-      res.sessionId = sessionId;
+      if (sessionId in db.data.session) {
+        res.sessionId = sessionId;
+      }
     }
   }
 }
@@ -81,7 +87,7 @@ function respond(req, res) {
     pathname = '/index.htmljs'
   }
 
-  checkSessionId(req, res);
+  setSessionId(req, res);
 
   env.parsed = path.parse(pathname);
   if (req.method === 'POST') {
@@ -105,6 +111,14 @@ const server = http.createServer((req, res) => {
     empty_res(res);
   }
 });
+
+function init() {
+  if (undefined == db.data.session) {
+    db.data.session = {};
+  }
+}
+
+init();
 
 server.listen(2806, '0.0.0.0', () => {
   console.log(`Сервер запущен port: 2806`);
