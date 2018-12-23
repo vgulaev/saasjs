@@ -8,7 +8,8 @@ const db = new (require('./easy-db').db)();
 var config = new (require('./config').config)();
 var env = {
   rootpath: __dirname,
-  db: db
+  db: db,
+  semaphore: {}
 };
 
 function empty_res(res) {
@@ -49,9 +50,8 @@ function static(req, res) {
   var content = '';
   if ('.htmljs' == env.parsed['ext']) {
     var filename = `./content/htmljs/compiled/${env.parsed['name']}.html`;
-    delete require.cache[require.resolve(filename)];
     var data = {env: env};
-    require(filename).build(res, data).then(function (content) {
+    _require(filename).build(res, data).then(function (content) {
       res.end(content);
     });
   } else {
@@ -65,6 +65,11 @@ function static(req, res) {
     }
     res.end(content);
   }
+}
+
+function _require(filename) {
+  delete require.cache[require.resolve(filename)];
+  return require(filename)
 }
 
 function setSessionId(req, res) {
@@ -90,10 +95,13 @@ function respond(req, res) {
   setSessionId(req, res);
 
   env.parsed = path.parse(pathname);
+
   if (req.method === 'POST') {
   } else if (req.method === 'GET') {
     if ('oauthcallback' == env.parsed['name']) {
       require('./custom-oauth').oauthcallback(myURL, res, env);
+    } else if ('weekly-cost-data' == env.parsed['name']) {
+      _require('./weekly-cost-data').report(res);
     } else {
       static(req, res);
     }

@@ -1,5 +1,7 @@
 /log/*
 !/log/.keep
+!/log/tmp/.keep
+!/log/db/.keep
 
 /content/htmljs/compiled/*
 !/content/htmljs/compiled/.keep

@@ -8,6 +8,8 @@ if (undefined == res.sessionId) {
 <html>
 <head>
   <title>Weekly costs</title>
+  <style type="text/css"> td {padding: 5px;}
+  </style>
 </head>
 <script type="text/javascript" src="weekly_costs.js"></script>
 <body>

@@ -18,7 +18,7 @@ const {oauthlink} = require(`${data.env.rootpath}/custom-oauth`);
     <button onclick="location.reload();">reload</button>
   </div>
   <div>
-    <span>Page generatet at: ${(new Date).toISOString()}</span>
+    <span>Page generatet at (last): ${(new Date).toISOString()}</span>
   </div>
 </body>
 </html>
