@@ -18,6 +18,7 @@
   "homepage": "https://github.com/vgulaev/saasjs#readme",
   "dependencies": {
     "@mysql/xdevapi": "https://dev.mysql.com/get/Downloads/Connector-Nodejs/mysql-connector-nodejs-8.0.13.tar.gz",
-    "jsonwebtoken": "^8.4.0"
+    "jsonwebtoken": "^8.4.0",
+    "uuid": "^3.3.2"
   }
 }
