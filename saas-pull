@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+ssh-agent bash -c 'ssh-add config/saasjs.pem; git pull'
