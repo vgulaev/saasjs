@@ -33,6 +33,7 @@ function debug(res, msg) {
 function memo_type(type) {
   var types = {
     '.htmljs': 'text/html; charset=UTF-8',
+    '.html': 'text/html; charset=UTF-8',
     '.ico': 'image/x-icon',
     '.js': 'application/javascript'
   };
@@ -57,6 +58,8 @@ function static(req, res) {
   } else {
     if ('.js' == env.parsed['ext']) {
       content = fs.readFileSync(`content/js/${env.parsed['base']}`);
+    } else if ('.html' == env.parsed['ext']) {
+      content = fs.readFileSync(`content/html/${env.parsed['base']}`);
     } else if ('.ico' == env.parsed['ext']) {
       content = fs.readFileSync(`content/img/${env.parsed['base']}`);
     } else if ('.srv' == env.parsed['ext']) {
