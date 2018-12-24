@@ -6,7 +6,8 @@
 /content/htmljs/compiled/*
 !/content/htmljs/compiled/.keep
 
-config/
+/config/
+!/config/.keep
 node_modules/
 
 *.tmp

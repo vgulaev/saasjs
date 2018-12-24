@@ -39,7 +39,7 @@ function query(session) {
 }
 
 exports.update = function() {
-  var db_cred = config.dev.db;
+  var db_cred = config.db;
 
   const dbCred = {
       password: db_cred.pass,
