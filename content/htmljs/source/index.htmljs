@@ -5,6 +5,7 @@ const {oauthlink} = require(`${data.env.rootpath}/custom-oauth`);
 <head>
   <title>SaaS center</title>
 </head>
+<link rel="stylesheet" href="common.css" type="text/css">
 <body>
   <div>Welcome to SaaS Center</div>
   if (undefined == res.sessionId) {

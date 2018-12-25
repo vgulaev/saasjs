@@ -32,8 +32,9 @@ function debug(res, msg) {
 
 function memo_type(type) {
   var types = {
-    '.htmljs': 'text/html; charset=UTF-8',
+    '.css': 'text/css',
     '.html': 'text/html; charset=UTF-8',
+    '.htmljs': 'text/html; charset=UTF-8',
     '.ico': 'image/x-icon',
     '.js': 'application/javascript'
   };
@@ -62,6 +63,8 @@ function static(req, res) {
       content = fs.readFileSync(`content/html/${env.parsed['base']}`);
     } else if ('.ico' == env.parsed['ext']) {
       content = fs.readFileSync(`content/img/${env.parsed['base']}`);
+    } else if ('.css' == env.parsed['ext']) {
+      content = fs.readFileSync(`content/css/${env.parsed['base']}`);
     } else if ('.srv' == env.parsed['ext']) {
     } else {
       content = 'Strange things happens';
@@ -132,6 +135,7 @@ function init() {
 
 init();
 
-server.listen(8080, '0.0.0.0', () => {
-  console.log(`Сервер запущен port: 2806`);
+var port = 8080;
+server.listen(port, '0.0.0.0', () => {
+  console.log(`Сервер запущен port: ${port}`);
 });

@@ -11,6 +11,7 @@ if (undefined == res.sessionId) {
   <style type="text/css"> td {padding: 5px;}
   </style>
 </head>
+<link rel="stylesheet" href="common.css" type="text/css">
 <script type="text/javascript" src="weekly_costs.js"></script>
 <body>
   <div>
