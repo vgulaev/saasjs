@@ -79,8 +79,9 @@ function setSessionId(req, res) {
   var sessionId = req.headers.cookie;
   if (sessionId == undefined) return;
   if (req.headers.cookie.length > 32) {
-    if (sessionId.indexOf('s=') != -1) {
-      sessionId = sessionId.replace('s=', '');
+    var s = sessionId.indexOf('s=');
+    if (s != -1) {
+      sessionId = sessionId.substring(s + 2, s + 38);
       if (sessionId in db.data.session) {
         res.sessionId = sessionId;
       }

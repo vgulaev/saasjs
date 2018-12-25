@@ -2,8 +2,10 @@ const https = require('https');
 const url = require('url');
 const jwt = require('jsonwebtoken');
 const uuidv4 = require('uuid/v4');
+const fs = require('fs');
 
 var config = new (require('./config').config)();
+var allowedEmail = JSON.parse(fs.readFileSync('config/authorized.json'));
 
 exports.oauthlink = function () {
   return ['https://accounts.google.com/o/oauth2/v2/auth?',
@@ -49,7 +51,7 @@ exports.oauthcallback = function (myURL, res, env) {
       var expires = new Date;
       var parsed = JSON.parse(data);
       var decoded = jwt.decode(parsed['id_token']);
-      if (['valentin.gulyaev@aurea.com'].indexOf(decoded['email']) != -1) {
+      if (allowedEmail.indexOf(decoded['email']) != -1) {
         var sessionId = uuidv4();
         db.data.session[sessionId] = {email: decoded['email'],
           created_at: expires.toISOString()};
