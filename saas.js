@@ -131,6 +131,6 @@ function init() {
 
 init();
 
-server.listen(2806, '0.0.0.0', () => {
+server.listen(8080, '0.0.0.0', () => {
   console.log(`Сервер запущен port: 2806`);
 });
