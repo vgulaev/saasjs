@@ -65,7 +65,7 @@ function report() {
       return acc + wrap('tr', td);
     },"");
 
-    this.reportTag.innerHTML = wrap('table', innerHTML);
+    this.reportTag.innerHTML = wrap('table', innerHTML, {style: `width: ${100 * (reportData.result.length + 1)}px`});
   };
 
   this.update = function () {
