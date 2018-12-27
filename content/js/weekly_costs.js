@@ -38,6 +38,7 @@ function report() {
   };
 
   this.reportTag = document.getElementById('report');
+  this.statusTag = document.getElementById('status');
   // this.status('Report started');
   function wrap(tag, context, option) {
     var head = [tag];
@@ -66,6 +67,7 @@ function report() {
     },"");
 
     this.reportTag.innerHTML = wrap('table', innerHTML, {style: `width: ${110 * (reportData.result.length + 1)}px`});
+    this.statusTag.innerHTML = 'Data updated at: ' + reportData.generatedAt;
   };
 
   this.update = function () {
