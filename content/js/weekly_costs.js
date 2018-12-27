@@ -82,8 +82,8 @@ window.addEventListener('load', function(event) {
   app.update();
 });
 
-document.addEventListener('copy', function(e) {
-  console.log('copied');
-  e.clipboardData.setData('text/plain', 'Hello World!');
-  e.preventDefault();
-});
+// document.addEventListener('copy', function(e) {
+//   console.log('copied');
+//   e.clipboardData.setData('text/plain', 'Hello World!');
+//   e.preventDefault();
+// });
