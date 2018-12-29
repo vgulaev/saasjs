@@ -45,6 +45,13 @@ function memo_type(type) {
   }
 }
 
+function jarvisMsg(res) {
+  res.writeHead(200, {
+    'Content-Type': memo_type()
+  });
+  res.end(fs.readFileSync('Jarvis/msg.json'));
+}
+
 function static(req, res) {
   res.writeHead(200, {
     'Content-Type': memo_type(env.parsed['ext'])
@@ -109,6 +116,8 @@ function respond(req, res) {
       require('./custom-oauth').oauthcallback(myURL, res, env);
     } else if ('weekly-cost-data' == env.parsed['name']) {
       _require('./weekly-cost-data').report(res);
+    } else if ('jarvis-msg' == env.parsed['name']) {
+      jarvisMsg(res);
     } else {
       static(req, res);
     }

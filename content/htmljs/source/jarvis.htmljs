@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>I'm Jarvis</title>
+</head>
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="jarvis.js"></script>
+<body>
+  <div>
+    <a href="index.htmljs">Index</a>
+  </div>
+  <div id="content">
+  </div>
+  <div>
+    <textarea id="msg" cols="33" onkeypress="return false;"></textarea>
+  </div>
+  <div>
+    <!-- span>Scan: </span><input name="scanText" id="scanText" -->
+  </div>
+</body>
+</html>
