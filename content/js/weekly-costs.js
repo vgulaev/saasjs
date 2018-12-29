@@ -30,15 +30,6 @@ function report() {
   this.reportTag = document.getElementById('report');
   this.statusTag = document.getElementById('status');
   // this.status('Report started');
-  function wrap(tag, context, option) {
-    var head = [tag];
-    if (undefined != option) {
-      if ('style' in option) {
-        head.push(`style="${option['style']}"`);
-      }
-    }
-    return `<${head.join(' ')}>${context}</${tag}>`
-  }
 
   this.render = function (data) {
     var _array = (new Array(11)).fill('');

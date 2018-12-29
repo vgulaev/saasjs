@@ -14,6 +14,9 @@ if (undefined == res.sessionId) {
     <a href="weekly_costs.htmljs">Weekly costs</a>
   </div>
   <div>
+    <a href="staging.htmljs">Staging costs</a>
+  </div>
+  <div>
     <a href="jira_tickets.htmljs">Jira tickets</a>
   </div>
   <div>

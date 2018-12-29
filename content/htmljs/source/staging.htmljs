@@ -7,13 +7,13 @@ if (undefined == res.sessionId) {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Weekly costs</title>
+  <title>Staging costs</title>
   <style type="text/css"> td {padding: 5px;}
   </style>
 </head>
 <link rel="stylesheet" href="common.css" type="text/css">
 <script type="text/javascript" src="common.js"></script>
-<script type="text/javascript" src="weekly-costs.js"></script>
+<script type="text/javascript" src="staging-cost.js"></script>
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>

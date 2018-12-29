@@ -7,3 +7,13 @@ function httpGetAsync(theUrl, callback) {
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
     xmlHttp.send(null);
 }
+
+function wrap(tag, context, option) {
+  var head = [tag];
+  if (undefined != option) {
+    if ('style' in option) {
+      head.push(`style="${option['style']}"`);
+    }
+  }
+  return `<${head.join(' ')}>${context}</${tag}>`
+}
