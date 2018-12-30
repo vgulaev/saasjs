@@ -1,5 +1,6 @@
 const mysqlx = require('@mysql/xdevapi');
 const fs = require('fs');
+const zlib = require('zlib');
 
 var config = new (require('./config').config)();
 var fileReport = './log/tmp/weekly-cost-data.json';
@@ -28,6 +29,9 @@ function query(session) {
   // q = `select * from eycost.dailycost limit 2`;
   var rows = [];
   session.sql(q).execute(result => {
+    for (var i = 1; i < result.length; i++) {
+      result[i] = Math.round(result[i] * 100) / 100;
+    }
     rows.push(result);
   }).then(function() {
     fs.writeFileSync(fileReport, JSON.stringify({
@@ -63,13 +67,28 @@ exports.report = function(res) {
     res.end();
     return;
   } else {
-    res.writeHead(200, {
-      'Content-Type': 'application/json'
-    });
     var data = {
       status: 'success',
       data: fs.readFileSync(fileReport, 'utf-8')
     };
-    res.end(JSON.stringify(data));
+
+    let head = {'Content-Type': 'application/json'};
+    if (res.applyGzip) {
+      head['content-encoding'] = 'gzip';
+      res.writeHead(200, head);
+      const buf = new Buffer(JSON.stringify(data), 'utf-8');
+      zlib.gzip(buf, function (_, result) {
+        res.end(result);
+      });
+    } else {
+      res.writeHead(200, head);
+      res.end(JSON.stringify(data));
+    }
+  }
+}
+
+if (process.argv.length > 1) {
+  if (__filename == process.argv[1]) {
+    exports.update();
   }
 }

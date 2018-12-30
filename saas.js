@@ -53,9 +53,8 @@ function jarvisMsg(res) {
 }
 
 function static(req, res) {
-  res.writeHead(200, {
-    'Content-Type': memo_type(env.parsed['ext'])
-  });
+  let head = {'Content-Type': memo_type(env.parsed['ext'])};
+  res.writeHead(200, head);
   var content = '';
   if ('.htmljs' == env.parsed['ext']) {
     var filename = `./content/htmljs/compiled/${env.parsed['name']}.html`;
@@ -72,11 +71,20 @@ function static(req, res) {
       content = fs.readFileSync(`content/img/${env.parsed['base']}`);
     } else if ('.css' == env.parsed['ext']) {
       content = fs.readFileSync(`content/css/${env.parsed['base']}`);
-    } else if ('.srv' == env.parsed['ext']) {
     } else {
       content = 'Strange things happens';
     }
     res.end(content);
+  }
+}
+
+function service(req, res) {
+  if ('weekly-cost-data' == env.parsed['name']) {
+    _require('./weekly-cost-data').report(res);
+  } else if ('staging-cost-data' == env.parsed['name']) {
+    _require('./staging-cost-data').report(res);
+  } else if ('jarvis-msg' == env.parsed['name']) {
+    jarvisMsg(res);
   }
 }
 
@@ -99,6 +107,16 @@ function setSessionId(req, res) {
   }
 }
 
+function setGzipStatus(req, res) {
+  let status = req.headers['accept-encoding'];
+  res.applyGzip = false;
+  if (undefined != status) {
+    if (status.indexOf('gzip') > -1) {
+      res.applyGzip = true;
+    }
+  }
+}
+
 function respond(req, res) {
   var myURL = url.parse(req.url);
   var pathname = myURL['pathname'];
@@ -107,22 +125,22 @@ function respond(req, res) {
   }
 
   setSessionId(req, res);
+  setGzipStatus(req, res);
 
   env.parsed = path.parse(pathname);
 
   if (req.method === 'POST') {
+    empty_res(res);
   } else if (req.method === 'GET') {
     if ('oauthcallback' == env.parsed['name']) {
       require('./custom-oauth').oauthcallback(myURL, res, env);
-    } else if ('weekly-cost-data' == env.parsed['name']) {
-      _require('./weekly-cost-data').report(res);
-    } else if ('jarvis-msg' == env.parsed['name']) {
-      jarvisMsg(res);
+    } else if ('.srv' == env.parsed['ext']) {
+      service(req, res);
     } else {
       static(req, res);
     }
   } else {
-    res.end("Hello word!!!");
+    empty_res(res);
   }
 };
 
