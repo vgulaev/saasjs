@@ -1,10 +1,9 @@
-const mysqlx = require('@mysql/xdevapi');
-const fs = require('fs');
-const zlib = require('zlib');
+const fs          = require('fs');
+const mysqlx      = require('@mysql/xdevapi');
+const {sendJSON}  = require('./sendJSON');
+var config        = new (require('./config').config)();
 
-var config = new (require('./config').config)();
 var fileReport = './log/tmp/weekly-cost-data.json';
-
 function query(session) {
   var q = `select DATE_FORMAT(week, '%Y-%m-%d') week,
       sum(if('RI' = cat1, cost, 0))/1000 RI,
@@ -43,17 +42,8 @@ function query(session) {
 }
 
 exports.update = function() {
-  var db_cred = config.db;
-
-  const dbCred = {
-      password: db_cred.pass,
-      user: db_cred.user,
-      host: db_cred.host,
-      schema: 'eycost'
-  };
-
  mysqlx
-  .getSession(dbCred)
+  .getSession(config.mysqlxCred)
   .then(session => {
     query(session);
   })
@@ -72,18 +62,7 @@ exports.report = function(res) {
       data: fs.readFileSync(fileReport, 'utf-8')
     };
 
-    let head = {'Content-Type': 'application/json'};
-    if (res.applyGzip) {
-      head['content-encoding'] = 'gzip';
-      res.writeHead(200, head);
-      const buf = new Buffer(JSON.stringify(data), 'utf-8');
-      zlib.gzip(buf, function (_, result) {
-        res.end(result);
-      });
-    } else {
-      res.writeHead(200, head);
-      res.end(JSON.stringify(data));
-    }
+    sendJSON(res, data);
   }
 }
 

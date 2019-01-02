@@ -17,6 +17,7 @@ if (undefined == res.sessionId) {
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
+    <a href="staging.htmljs">Staging cost</a>
   </div>
   <div id="status"></div>
   <div id="report"></div>

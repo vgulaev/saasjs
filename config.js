@@ -5,4 +5,11 @@ exports.config = function () {
   for (var e of Object.keys(content)) {
     this[e] = content[e];
   }
+
+  this.mysqlxCred = {
+      password: this.db.pass,
+      user: this.db.user,
+      host: this.db.host,
+      schema: 'eycost'
+  };
 }
