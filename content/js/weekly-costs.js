@@ -52,7 +52,7 @@ function report() {
   };
 
   this.update = function () {
-    httpGetAsync('weekly-cost-data.srv', (data) => {
+    httpGetAsync('cost-data-weekly.srv', (data) => {
       this.render(JSON.parse(data));
     });
   };

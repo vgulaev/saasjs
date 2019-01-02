@@ -79,10 +79,10 @@ function static(req, res) {
 }
 
 function service(req, res) {
-  if ('weekly-cost-data' == env.parsed['name']) {
-    _require('./weekly-cost-data').report(res);
-  } else if ('staging-cost-data' == env.parsed['name']) {
-    _require('./staging-cost-data').report(res);
+  if ('cost-data-weekly' == env.parsed['name']) {
+    _require('./cost-data-weekly').report(res);
+  } else if ('cost-data-staging' == env.parsed['name']) {
+    _require('./cost-data-staging').report(res);
   } else if ('jarvis-msg' == env.parsed['name']) {
     jarvisMsg(res);
   }

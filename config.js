@@ -12,4 +12,10 @@ exports.config = function () {
       host: this.db.host,
       schema: 'eycost'
   };
+
+  if ('dev' == this.host) {
+    this.JSONspace = 2;
+  } else {
+    this.JSONspace = 0;
+  }
 }

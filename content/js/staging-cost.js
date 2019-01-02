@@ -30,7 +30,7 @@ function report() {
   };
 
   this.update = function () {
-    httpGetAsync('staging-cost-data.srv', (data) => {
+    httpGetAsync('cost-data-staging.srv', (data) => {
       this.render(JSON.parse(data));
     });
   };

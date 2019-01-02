@@ -1,4 +1,4 @@
-const zlib        = require('zlib');
+const zlib = require('zlib');
 
 exports.sendJSON = function(res, data) {
   let head = {'Content-Type': 'application/json'};
