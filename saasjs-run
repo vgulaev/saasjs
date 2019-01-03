@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
+
 node htmljs.js
+node kill.js
 node saas.js >/dev/null 2>&1 &
 echo $! > log/saasjs.pid
 echo "start complete"
