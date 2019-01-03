@@ -13,17 +13,6 @@ function report() {
     innerHTML += reportData.result.map((row) => {
       return wrap('tr', row.map((el) => wrap('td', el)).join(''));
     }).join('');
-    // innerHTML += _array.reduce((acc, value, index) => {
-    //   let td = '';
-    //   // var td = reportData.result.map((el, inx) => wrap('td', (() => {
-    //   //   var _text = el[index];
-    //   //   if (index != 0) {
-    //   //     _text = formatCurrency(el[index]);
-    //   //   }
-    //   //   return _text}).call(), {style: 'text-align: right;'})).join('');
-    //   td = wrap('td', reportData.header[index]) + td;
-    //   return acc + wrap('tr', td);
-    // },"");
 
     this.reportTag.innerHTML = wrap('table', innerHTML);
     this.statusTag.innerHTML = 'Data updated at: ' + reportData.generatedAt;
@@ -32,6 +21,13 @@ function report() {
   this.update = function () {
     httpGetAsync('cost-data-staging.srv', (data) => {
       this.render(JSON.parse(data));
+    });
+  };
+
+  this.requestDataFromAWS = function() {
+    this.statusTag.innerHTML = 'Data requested';
+    httpGetAsync('cost-data-staging.srv?o=requestDataFromAWS', (data) => {
+      this.statusTag.innerHTML = 'Completed!';
     });
   };
 }

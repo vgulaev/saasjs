@@ -53,24 +53,24 @@ function jarvisMsg(res) {
 }
 
 function static(req, res) {
-  let head = {'Content-Type': memo_type(env.parsed['ext'])};
+  let head = {'Content-Type': memo_type(res.c.parsed['ext'])};
   res.writeHead(200, head);
   var content = '';
-  if ('.htmljs' == env.parsed['ext']) {
-    var filename = `./content/htmljs/compiled/${env.parsed['name']}.html`;
+  if ('.htmljs' == res.c.parsed['ext']) {
+    var filename = `./content/htmljs/compiled/${res.c.parsed['name']}.html`;
     var data = {env: env};
     _require(filename).build(res, data).then(function (content) {
       res.end(content);
     });
   } else {
-    if ('.js' == env.parsed['ext']) {
-      content = fs.readFileSync(`content/js/${env.parsed['base']}`);
-    } else if ('.html' == env.parsed['ext']) {
-      content = fs.readFileSync(`content/html/${env.parsed['base']}`);
-    } else if ('.ico' == env.parsed['ext']) {
-      content = fs.readFileSync(`content/img/${env.parsed['base']}`);
-    } else if ('.css' == env.parsed['ext']) {
-      content = fs.readFileSync(`content/css/${env.parsed['base']}`);
+    if ('.js' == res.c.parsed['ext']) {
+      content = fs.readFileSync(`content/js/${res.c.parsed['base']}`);
+    } else if ('.html' == res.c.parsed['ext']) {
+      content = fs.readFileSync(`content/html/${res.c.parsed['base']}`);
+    } else if ('.ico' == res.c.parsed['ext']) {
+      content = fs.readFileSync(`content/img/${res.c.parsed['base']}`);
+    } else if ('.css' == res.c.parsed['ext']) {
+      content = fs.readFileSync(`content/css/${res.c.parsed['base']}`);
     } else {
       content = 'Strange things happens';
     }
@@ -79,11 +79,11 @@ function static(req, res) {
 }
 
 function service(req, res) {
-  if ('cost-data-weekly' == env.parsed['name']) {
+  if ('cost-data-weekly' == res.c.parsed['name']) {
     _require('./cost-data-weekly').report(res);
-  } else if ('cost-data-staging' == env.parsed['name']) {
-    _require('./cost-data-staging').report(res);
-  } else if ('jarvis-msg' == env.parsed['name']) {
+  } else if ('cost-data-staging' == res.c.parsed['name']) {
+    _require('./cost-data-staging').route(res);
+  } else if ('jarvis-msg' == res.c.parsed['name']) {
     jarvisMsg(res);
   }
 }
@@ -118,23 +118,25 @@ function setGzipStatus(req, res) {
 }
 
 function respond(req, res) {
-  var myURL = url.parse(req.url);
-  var pathname = myURL['pathname'];
+  res.c = {} // custom hash for fast and short access to req values
+  res.c.url = req.url;
+  res.c.urlParsed = url.parse(req.url);
+
+  var pathname = res.c.urlParsed['pathname'];
   if ('/' == pathname) {
     pathname = '/index.htmljs'
   }
+  res.c.parsed = path.parse(pathname);
 
   setSessionId(req, res);
   setGzipStatus(req, res);
 
-  env.parsed = path.parse(pathname);
-
   if (req.method === 'POST') {
     empty_res(res);
   } else if (req.method === 'GET') {
-    if ('oauthcallback' == env.parsed['name']) {
+    if ('oauthcallback' == res.c.parsed['name']) {
       require('./custom-oauth').oauthcallback(myURL, res, env);
-    } else if ('.srv' == env.parsed['ext']) {
+    } else if ('.srv' == res.c.parsed['ext']) {
       service(req, res);
     } else {
       static(req, res);

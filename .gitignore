@@ -2,6 +2,7 @@
 !/log/.keep
 !/log/tmp/.keep
 !/log/db/.keep
+!/log/consoleOutput/.keep
 
 /content/htmljs/compiled/*
 !/content/htmljs/compiled/.keep

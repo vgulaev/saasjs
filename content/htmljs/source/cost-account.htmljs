@@ -7,18 +7,17 @@ if (undefined == res.sessionId) {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Staging costs</title>
+  <title>Account costs</title>
   <style type="text/css"> td {padding: 5px;}
   </style>
 </head>
 <link rel="stylesheet" href="common.css" type="text/css">
 <script type="text/javascript" src="common.js"></script>
-<script type="text/javascript" src="cost-staging.js"></script>
+<script type="text/javascript" src="weekly-costs.js"></script>
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
-    <a href="weekly_costs.htmljs">Weekly costs</a>
-    <button onclick="app.requestDataFromAWS();">Sync cost</button>
+    <a href="staging.htmljs">Staging cost</a>
   </div>
   <div id="status"></div>
   <div id="report"></div>
