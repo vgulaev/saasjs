@@ -27,7 +27,8 @@ function report() {
   this.requestDataFromAWS = function() {
     this.statusTag.innerHTML = 'Data requested';
     httpGetAsync('cost-data-staging.srv?o=requestDataFromAWS', (data) => {
-      this.statusTag.innerHTML = 'Completed!';
+      var reportData = JSON.parse(data);
+      this.statusTag.innerHTML = reportData['status'];
     });
   };
 }

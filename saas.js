@@ -127,7 +127,7 @@ function respond(req, res) {
     pathname = '/index.htmljs'
   }
   res.c.parsed = path.parse(pathname);
-
+  res.c.env = env;
   setSessionId(req, res);
   setGzipStatus(req, res);
 

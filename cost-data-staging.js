@@ -1,8 +1,10 @@
-const fs          = require('fs');
-const mysqlx      = require('@mysql/xdevapi');
-const {sendJSON}  = require('./sendJSON');
-const {spawn}     = require('child_process');
-const uuidv4 = require('uuid/v4');
+const fs              = require('fs');
+const mysqlx          = require('@mysql/xdevapi');
+const uuidv4          = require('uuid/v4');
+const {isRoot}        = require('./is-root')
+const {semaphorOpen}  = require('./semaphor-open');
+const {sendJSON}      = require('./sendJSON');
+const {spawn}         = require('child_process');
 
 var config        = new (require('./config').config)();
 
@@ -41,6 +43,14 @@ function query(session) {
 function requestDataFromAWS(res) {
   return new Promise(function (resolve, reject) {
     let filename = `./log/consoleOutput/${(new Date).toISOString().replace(/[:, \.]/g, '-')}-${uuidv4()}.txt`;
+
+    if (!isRoot(res) && !semaphorOpen(res, 'requestDataFromAWS', 10)) {
+      sendJSON(res, {status: 'Please wait 10 minutes and repeat'});
+      reject();
+      return;
+    }
+    res.c.env.semaphore['requestDataFromAWS'] = new Date;
+
     fs.writeFileSync(filename, '');
     let cmd = spawn('cd ../work_in_XO/ && ruby aws_ct_accounts.rb', [],{shell: true});
 
