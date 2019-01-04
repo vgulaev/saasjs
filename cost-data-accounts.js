@@ -4,11 +4,9 @@ const uuidv4          = require('uuid/v4');
 const {isRoot}        = require('./is-root')
 const {semaphorOpen}  = require('./semaphor-open');
 const {sendJSON}      = require('./sendJSON');
-const {spawn}         = require('child_process');
 
 var config        = new (require('./config').config)();
 
-var fileReport = './log/tmp/staging-cost-data.json';
 function query(session) {
   let {acc} = require('./lib/staging-accounts.js')
 
@@ -76,15 +74,15 @@ exports.route = function(res) {
     });
     res.end();
     return;
+  }
+
+  if (undefined == res.c.urlParsed['query']) {
+    exports.report(res);
+  } else if ('o=requestDataFromAWS' == res.c.urlParsed['query']){
+    requestDataFromAWS(res)
+      .then(() => exports.update());
   } else {
-    if (undefined == res.c.urlParsed['query']) {
-      exports.report(res);
-    } else if ('o=requestDataFromAWS' == res.c.urlParsed['query']){
-      requestDataFromAWS(res)
-        .then(() => exports.update());
-    } else {
-      throw `${res.c.url} haven't correct route`;
-    }
+    throw `${res.c.url} haven't correct route`;
   }
 }
 

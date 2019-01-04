@@ -1,8 +1,7 @@
 if (undefined == res.sessionId) {
-  require('../compiled/unauthorized.html.js').build(res, data).then(function (content) {
-    console.log(content);
-    resolve(content);
-  });
+  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
+  res.end();
+  reject();
 } else {
 <!DOCTYPE html>
 <html>
@@ -11,10 +10,10 @@ if (undefined == res.sessionId) {
 </head>
 <body>
   <div>
-    <a href="weekly_costs.htmljs">Weekly costs</a>
+    <a href="cost-weekly.htmljs">Weekly costs</a>
   </div>
   <div>
-    <a href="staging.htmljs">Staging costs</a>
+    <a href="cost-staging.htmljs">Staging costs</a>
   </div>
   <div>
     <a href="cost-account.htmljs">Cost by account</a>

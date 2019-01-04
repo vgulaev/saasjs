@@ -54,15 +54,16 @@ function jarvisMsg(res) {
 
 function static(req, res) {
   let head = {'Content-Type': memo_type(res.c.parsed['ext'])};
-  res.writeHead(200, head);
   var content = '';
   if ('.htmljs' == res.c.parsed['ext']) {
     var filename = `./content/htmljs/compiled/${res.c.parsed['name']}.html`;
     var data = {env: env};
     _require(filename).build(res, data).then(function (content) {
+      res.writeHead(200, head);
       res.end(content);
     });
   } else {
+    res.writeHead(200, head);
     if ('.js' == res.c.parsed['ext']) {
       content = fs.readFileSync(`content/js/${res.c.parsed['base']}`);
     } else if ('.html' == res.c.parsed['ext']) {

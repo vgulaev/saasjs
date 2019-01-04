@@ -1,8 +1,7 @@
 if (undefined == res.sessionId) {
-  require('../compiled/unauthorized.html.js').build(res, data).then(function (content) {
-    console.log(content);
-    resolve(content);
-  });
+  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
+  res.end();
+  reject();
 } else {
 <!DOCTYPE html>
 <html>
@@ -13,11 +12,15 @@ if (undefined == res.sessionId) {
 </head>
 <link rel="stylesheet" href="common.css" type="text/css">
 <script type="text/javascript" src="common.js"></script>
-<script type="text/javascript" src="weekly-costs.js"></script>
+<script type="text/javascript" src="cost-account.js"></script>
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
-    <a href="staging.htmljs">Staging cost</a>
+    <a href="cost-weekly.htmljs">Weekly costs</a>
+    <a href="cost-staging.htmljs">Staging cost</a>
+  </div>
+  <div>
+    <label for="accs">Accounts:</label><input name="accs" id="accs">
   </div>
   <div id="status"></div>
   <div id="report"></div>

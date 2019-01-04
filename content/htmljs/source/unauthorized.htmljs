@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
-<!-- script type="text/javascript" src="js/index.js"></script-->
 <head>
   <title>SaaS center</title>
 </head>
 <body>
   <div>
-    <a href="index.htmljs">Index</a>
+    <span>You not allowed to work here</span>
   </div>
   <div>
-    <span>You not allowed to work here</span>
+    <span>Please authorize from <a href="index.htmljs">Index</a> page</span>
   </div>
 </body>
 </html>

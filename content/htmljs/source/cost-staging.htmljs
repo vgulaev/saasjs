@@ -1,8 +1,7 @@
 if (undefined == res.sessionId) {
-  require('../compiled/unauthorized.html.js').build(res, data).then(function (content) {
-    console.log(content);
-    resolve(content);
-  });
+  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
+  res.end();
+  reject();
 } else {
 <!DOCTYPE html>
 <html>
@@ -17,7 +16,7 @@ if (undefined == res.sessionId) {
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
-    <a href="weekly_costs.htmljs">Weekly costs</a>
+    <a href="cost-weekly.htmljs">Weekly costs</a>
     <button onclick="app.requestDataFromAWS();">Sync cost</button>
   </div>
   <div id="status"></div>
