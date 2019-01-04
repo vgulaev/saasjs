@@ -158,7 +158,7 @@ function respond(req, res) {
     }
   } else if (req.method === 'GET') {
     if ('oauthcallback' == res.c.parsed['name']) {
-      require('./custom-oauth').oauthcallback(myURL, res, env);
+      require('./custom-oauth').oauthcallback(res.c.urlParsed, res, env);
     } else if ('.srv' == res.c.parsed['ext']) {
       service(req, res);
     } else {
