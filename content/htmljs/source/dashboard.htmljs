@@ -3,6 +3,7 @@ if (undefined == res.sessionId) {
   res.end();
   reject();
 } else {
+const {isRoot} = require('../../../is-root');
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,9 +22,11 @@ if (undefined == res.sessionId) {
   <div>
     <a href="jira_tickets.htmljs">Jira tickets</a>
   </div>
+  if (isRoot(res)) {
   <div>
-    <span>Sees: ${res.sessionId}</span>
+    <a href="access.htmljs">Access</a>
   </div>
+  }
 </body>
 </html>
 resolve(content);

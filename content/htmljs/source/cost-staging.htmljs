@@ -3,6 +3,7 @@ if (undefined == res.sessionId) {
   res.end();
   reject();
 } else {
+let {acc} = require('../../../lib/staging-accounts.js');
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +19,9 @@ if (undefined == res.sessionId) {
     <a href="dashboard.htmljs">Dashboard</a>
     <a href="cost-weekly.htmljs">Weekly costs</a>
     <button onclick="app.requestDataFromAWS();">Sync cost</button>
+    Object.keys(acc).forEach((el) => {
+      <a href="cost-account.htmljs#q=${acc[el]}">${el}</a>
+    });
   </div>
   <div id="status"></div>
   <div id="report"></div>

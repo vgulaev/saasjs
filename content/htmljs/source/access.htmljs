@@ -1,0 +1,35 @@
+const fs = require('fs');
+const {isRoot} = require('../../../is-root');
+if (!isRoot(res)) {
+  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
+  res.end();
+  reject();
+} else {
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Manage access</title>
+  <style type="text/css"> td {padding: 5px;}
+  </style>
+</head>
+<link rel="stylesheet" href="common.css" type="text/css">
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="access.js"></script>
+<body>
+  <div>
+    <a href="dashboard.htmljs">Dashboard</a>
+  </div>
+  let list = JSON.parse(fs.readFileSync(`${res.c.env.rootpath}/config/authorized.json`, 'utf-8'));
+  list.forEach((el) => {
+    <div>
+      <span>${el}</span>
+    </div>
+  });
+  <div>
+    <label for="email">Email:</label><input name="email" id="email">
+    <button onclick="addEmail();">Add</button>
+  </div>
+</body>
+</html>
+resolve(content);
+}

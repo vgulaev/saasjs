@@ -20,7 +20,8 @@ if (undefined == res.sessionId) {
     <a href="cost-staging.htmljs">Staging cost</a>
   </div>
   <div>
-    <label for="accs">Accounts:</label><input name="accs" id="accs">
+    <label for="q">Accounts:</label><input name="q" id="q">
+    <button onclick="app.update();">Report</button>
   </div>
   <div id="status"></div>
   <div id="report"></div>

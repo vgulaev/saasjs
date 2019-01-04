@@ -1,8 +1,9 @@
-const http = require('http');
-const https = require('https');
-const url = require('url');
-const path = require('path');
-const fs = require('fs');
+const fs        = require('fs');
+const http      = require('http');
+const https     = require('https');
+const path      = require('path');
+const url       = require('url');
+const {isRoot}  = require('./is-root')
 
 const db = new (require('./easy-db').db)();
 var config = new (require('./config').config)();
@@ -84,8 +85,12 @@ function service(req, res) {
     _require('./cost-data-weekly').report(res);
   } else if ('cost-data-staging' == res.c.parsed['name']) {
     _require('./cost-data-staging').route(res);
+  } else if ('cost-data-account' == res.c.parsed['name']) {
+    _require('./cost-data-account').route(res);
   } else if ('jarvis-msg' == res.c.parsed['name']) {
     jarvisMsg(res);
+  } else {
+    empty_res(res);
   }
 }
 
@@ -118,6 +123,18 @@ function setGzipStatus(req, res) {
   }
 }
 
+function getBody(req) {
+  return new Promise(function (resolve, reject) {
+    let body = [];
+    req.on('data', (chunk) => {
+      body.push(chunk);
+    }).on('end', () => {
+      body = Buffer.concat(body).toString();
+      resolve(body);
+    });
+  });
+}
+
 function respond(req, res) {
   res.c = {} // custom hash for fast and short access to req values
   res.c.url = req.url;
@@ -133,7 +150,12 @@ function respond(req, res) {
   setGzipStatus(req, res);
 
   if (req.method === 'POST') {
-    empty_res(res);
+    if (('access' == res.c.parsed['name']) && isRoot(res)) {
+      getBody(req)
+        .then((data) => _require('./access').post(res, data));
+    } else {
+      empty_res(res);
+    }
   } else if (req.method === 'GET') {
     if ('oauthcallback' == res.c.parsed['name']) {
       require('./custom-oauth').oauthcallback(myURL, res, env);

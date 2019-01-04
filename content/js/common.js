@@ -8,6 +8,21 @@ function httpGetAsync(theUrl, callback) {
     xmlHttp.send(null);
 }
 
+function httpPostAsync(theUrl, data) {
+  return new Promise(function (resolve, reject) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onload = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            resolve(xmlHttp.responseText);
+        } else {
+          reject();
+        }
+    };
+    xmlHttp.open("POST", theUrl, true); // true for asynchronous
+    xmlHttp.send(data);
+  });
+}
+
 function wrap(tag, context, option) {
   var head = [tag];
   if (undefined != option) {

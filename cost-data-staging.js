@@ -10,7 +10,7 @@ var config        = new (require('./config').config)();
 
 var fileReport = './log/tmp/staging-cost-data.json';
 function query(session) {
-  let {acc} = require('./lib/staging-accounts.js')
+  let {acc} = require('./lib/staging-accounts.js');
 
   let staging = Object.keys(acc).sort();
   let q = staging.map((name) => {
