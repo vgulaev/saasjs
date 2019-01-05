@@ -20,6 +20,7 @@ KEY index1 (aws_id)
 
 function query(session, query) {
   return new Promise(function(resolve, reject) {
+    // console.log('query:' + query.length);
     session.sql(query)
       .execute(result => {
         console.log(result);
@@ -34,12 +35,31 @@ mysqlx
     query(session, "USE eycost")
       .then(() => query(session, "DROP TABLE IF EXISTS awsri"))
       .then(() => query(session, createTable))
-      .then(() => dataAWS())
-      .then((q) => query(session, q))
+      .then(() => dataAWS(session))
       .then(() => session.close());
   });
 
-function dataAWS() {
+function pushToDB(session, data) {
+  return new Promise(function(resolve, reject) {
+  // let data = JSON.parse(fs.readFileSync('log/tmp/ri.json'));
+
+  // console.log(data.length);
+  let ins = [];
+  while (data.length != 0) {
+    let buf = [];
+    while (data.length != 0 && buf.length < 900) {
+      buf.push(data.shift());
+    }
+    let v = buf.map((el) => `(${el})`).join(',');
+    let q = `INSERT INTO awsri (aws_id, month, purchase_type, region, instance_type, cost, hour) VALUES ${v};`
+    ins.push(q);
+  }
+  ins.reduce((p, f) => p.then(() => query(session, f)), Promise.resolve())
+    .then(() => resolve());
+  });
+}
+
+function dataAWS(session) {
   return new Promise(function(resolve, reject) {
 
   period = {'start': '2018-06-01', 'end': '2019-01-01' }
@@ -94,18 +114,19 @@ function dataAWS() {
   }
 
   var rows = [];
-  function pushData(purchaseType, data) {
+  function pushData(aws_id, purchaseType, data) {
     data.ResultsByTime.forEach((month) => {
       month.Groups.forEach((row) => {
-        let csv = ['428226229991', month.TimePeriod.Start, purchaseType, ...row.Keys, row.Metrics.UnblendedCost.Amount, row.Metrics.UsageQuantity.Amount].map((el) => `'${el}'`);
+        let csv = [aws_id, month.TimePeriod.Start, purchaseType, ...row.Keys, row.Metrics.UnblendedCost.Amount, row.Metrics.UsageQuantity.Amount].map((el) => `'${el}'`);
         rows.push(csv)
       });
     });
   }
 
-  function queryAws(purchaseType) {
+  function queryAws(aws_id, purchaseType) {
     return new Promise(function(resolve, reject) {
-      var aws_cred = JSON.parse(fs.readFileSync('../work_in_XO/secrets/428226229991.json'));
+      console.log('Proccess: ' + aws_id + purchaseType)
+      var aws_cred = JSON.parse(fs.readFileSync(`../work_in_XO/secrets/${aws_id}.json`));
       AWS.config.update({ accessKeyId: aws_cred['AccessKeyId'], secretAccessKey: aws_cred['SecretAccessKey'], region: 'us-east-1' })
       var costexplorer = new AWS.CostExplorer();
       params.Filter.And[0].Dimensions.Values = [purchaseType];
@@ -114,24 +135,25 @@ function dataAWS() {
         else {
           // let output = JSON.stringify(data);
           // console.log(output);
-          pushData(purchaseType, data);
-          resolve();
-          // fs.writeFileSync('log/tmp/ri.json', output);
+          pushData(aws_id, purchaseType, data);
+          pushToDB(session, rows).then(() => {
+            // console.log('length: ' + rows.length);
+            resolve();
+          });
         }
       });
     });
   }
 
-
-  // let data = JSON.parse(fs.readFileSync('log/tmp/ri.json'));
-  // pushDataToCsv("On Demand Instances", data);
-
-  queryAws("On Demand Instances")
-    .then(() => queryAws("Standard Reserved Instances"))
+  queryAws('428226229991', 'On Demand Instances')
+    .then(() => queryAws('428226229991', 'Standard Reserved Instances'))
+    .then(() => queryAws('540235812892', 'On Demand Instances'))
+    .then(() => queryAws('540235812892', 'Standard Reserved Instances'))
+    .then(() => queryAws('157147590138', 'On Demand Instances'))
+    .then(() => queryAws('157147590138', 'Standard Reserved Instances'))
     .then(() => {
-      let v = rows.map((el) => `(${el})`).join(',');
-      let q = `INSERT INTO awsri (aws_id, month, purchase_type, region, instance_type, cost, hour) VALUES ${v};`
-      resolve(q);
+      // fs.writeFileSync('log/tmp/ri.json', JSON.stringify(rows));
+      resolve(rows);
     });
   });
 }
