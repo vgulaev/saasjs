@@ -35,7 +35,7 @@ function query(session) {
   }).then(function() {
     fs.writeFileSync(fileReport, JSON.stringify({
       generatedAt: (new Date).toISOString(),
-      header: ['week', 'RI', 'staff', 'staging', 'normal', 'beta', 'trial', 'deleted', 'undef', 'hard', 'total'],
+      header: ['week from', 'RI', 'staff', 'staging', 'normal', 'beta', 'trial', 'deleted', 'undef', 'hard', 'total'],
       result: rows}, null, config.JSONspace));
   });
   session.close();
