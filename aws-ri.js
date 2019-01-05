@@ -41,21 +41,18 @@ mysqlx
 
 function pushToDB(session, data) {
   return new Promise(function(resolve, reject) {
-  // let data = JSON.parse(fs.readFileSync('log/tmp/ri.json'));
-
-  // console.log(data.length);
-  let ins = [];
-  while (data.length != 0) {
-    let buf = [];
-    while (data.length != 0 && buf.length < 900) {
-      buf.push(data.shift());
+    let ins = [];
+    while (data.length != 0) {
+      let buf = [];
+      while (data.length != 0 && buf.length < 900) {
+        buf.push(data.shift());
+      }
+      let v = buf.map((el) => `(${el})`).join(',');
+      let q = `INSERT INTO awsri (aws_id, month, purchase_type, region, instance_type, cost, hour) VALUES ${v};`
+      ins.push(q);
     }
-    let v = buf.map((el) => `(${el})`).join(',');
-    let q = `INSERT INTO awsri (aws_id, month, purchase_type, region, instance_type, cost, hour) VALUES ${v};`
-    ins.push(q);
-  }
-  ins.reduce((p, f) => p.then(() => query(session, f)), Promise.resolve())
-    .then(() => resolve());
+    ins.reduce((p, f) => p.then(() => query(session, f)), Promise.resolve())
+      .then(() => resolve());
   });
 }
 
@@ -96,8 +93,6 @@ function dataAWS(session) {
           }
         } ]
       },
-
-    // Metrics: ['UnblendedCost'],
     Metrics: ['UsageQuantity', 'UnblendedCost'],
     GroupBy: [
       {
@@ -107,10 +102,8 @@ function dataAWS(session) {
       {
         Type: 'DIMENSION',
         Key: 'INSTANCE_TYPE',
-        // Key: 'PURCHASE_TYPE',
       }
     ],
-    // # next_page_token: "NextPageToken",
   }
 
   var rows = [];
@@ -136,10 +129,7 @@ function dataAWS(session) {
           // let output = JSON.stringify(data);
           // console.log(output);
           pushData(aws_id, purchaseType, data);
-          pushToDB(session, rows).then(() => {
-            // console.log('length: ' + rows.length);
-            resolve();
-          });
+          pushToDB(session, rows).then(() => resolve());
         }
       });
     });
