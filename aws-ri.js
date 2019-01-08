@@ -120,7 +120,7 @@ function dataAWS(session) {
     return new Promise(function(resolve, reject) {
       console.log('Proccess: ' + aws_id + purchaseType)
       var aws_cred = JSON.parse(fs.readFileSync(`../work_in_XO/secrets/${aws_id}.json`));
-      AWS.config.update({ accessKeyId: aws_cred['AccessKeyId'], secretAccessKey: aws_cred['SecretAccessKey'], region: 'us-east-1' })
+      AWS.config.update({ accessKeyId: aws_cred['AccessKeyId'], secretAccessKey: aws_cred['SecretAccessKey'], region: 'us-east-1' });
       var costexplorer = new AWS.CostExplorer();
       params.Filter.And[0].Dimensions.Values = [purchaseType];
       costexplorer.getCostAndUsage(params, function (err, data) {
