@@ -20,6 +20,9 @@ const {isRoot} = require('../../../is-root');
     <a href="cost-account.htmljs">Cost by account</a>
   </div>
   <div>
+    <a href="sql-console.htmljs">SQL Console</a>
+  </div>
+  <div>
     <a href="jira_tickets.htmljs">Jira tickets</a>
   </div>
   if (isRoot(res)) {

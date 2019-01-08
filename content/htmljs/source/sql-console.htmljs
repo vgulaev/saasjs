@@ -1,0 +1,35 @@
+if (undefined == res.sessionId) {
+  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
+  res.end();
+  reject();
+} else {
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SQL Console</title>
+  <style type="text/css"> td {padding: 5px;}
+  </style>
+</head>
+<link rel="stylesheet" href="common.css" type="text/css">
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="sql-console-client.js"></script>
+<body>
+  <div>
+    <a href="dashboard.htmljs">Dashboard</a>
+  </div>
+  <div>
+    <textarea id="q">
+content += "select month, aws_id, instance_type, ond/tot * 100, ond from ( "
+content += "SELECT month, aws_id, instance_type, sum(hour) tot, sum(if('On Demand Instances' = purchase_type, hour, 0)) ond FROM eycost.awsri "
+content += "group by  month, aws_id, instance_type) t1 "
+content += "where month = '2018-12-01' and instance_type like 't2%' "
+content += "order by ond desc"
+</textarea>
+    <button onclick="app.update();">Query</button>
+  </div>
+  <div id="status"></div>
+  <div id="report"></div>
+</body>
+</html>
+resolve(content);
+}

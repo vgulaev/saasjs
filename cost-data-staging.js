@@ -93,7 +93,7 @@ exports.update = function() {
   .getSession(config.mysqlxCred)
   .then(session => {
     query(session);
-  })
+  });
 }
 
 exports.report = function(res) {

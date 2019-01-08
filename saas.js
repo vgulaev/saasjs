@@ -81,12 +81,12 @@ function static(req, res) {
 }
 
 function service(req, res) {
-  if ('cost-data-weekly' == res.c.parsed['name']) {
-    _require('./cost-data-weekly').report(res);
-  } else if ('cost-data-staging' == res.c.parsed['name']) {
-    _require('./cost-data-staging').route(res);
-  } else if ('cost-data-account' == res.c.parsed['name']) {
-    _require('./cost-data-account').route(res);
+  if ([
+    'cost-data-weekly',
+    'cost-data-staging',
+    'cost-data-account'
+  ].indexOf(res.c.parsed['name']) != -1) {
+    _require(`./${res.c.parsed['name']}`).route(res);
   } else if ('jarvis-msg' == res.c.parsed['name']) {
     jarvisMsg(res);
   } else {
@@ -153,6 +153,9 @@ function respond(req, res) {
     if (('access' == res.c.parsed['name']) && isRoot(res)) {
       getBody(req)
         .then((data) => _require('./access').post(res, data));
+    } else if ('sql-console' == res.c.parsed['name']){
+      getBody(req)
+        .then((data) => _require('./sql-console').post(res, data));
     } else {
       empty_res(res);
     }

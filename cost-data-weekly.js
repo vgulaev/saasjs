@@ -41,6 +41,18 @@ function query(session) {
   session.close();
 }
 
+exports.route = function(res) {
+  if (undefined == res.sessionId) {
+    res.writeHead(302, {
+      'Location': 'unauthorized.htmljs',
+    });
+    res.end();
+    return;
+  } else {
+    report(res);
+  }
+}
+
 exports.update = function() {
  mysqlx
   .getSession(config.mysqlxCred)
@@ -49,21 +61,13 @@ exports.update = function() {
   })
 }
 
-exports.report = function(res) {
-  if (undefined == res.sessionId) {
-    res.writeHead(302, {
-      'Location': 'unauthorized.htmljs',
-    });
-    res.end();
-    return;
-  } else {
-    var data = {
-      status: 'success',
-      data: fs.readFileSync(fileReport, 'utf-8')
-    };
+function report(res) {
+  var data = {
+    status: 'success',
+    data: fs.readFileSync(fileReport, 'utf-8')
+  };
 
-    sendJSON(res, data);
-  }
+  sendJSON(res, data);
 }
 
 if (process.argv.length > 1) {
