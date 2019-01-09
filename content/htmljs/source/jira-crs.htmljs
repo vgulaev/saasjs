@@ -1,0 +1,31 @@
+if (undefined == res.sessionId) {
+  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
+  res.end();
+  reject();
+} else {
+const fs = require('fs');
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Jira CRs</title>
+  <style type="text/css"> td {padding: 5px;}
+  </style>
+</head>
+<link rel="stylesheet" href="common.css" type="text/css">
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="jira-client.js"></script>
+<body>
+  <div>
+    <a href="dashboard.htmljs">Dashboard</a>
+  </div>
+  <div>
+    <label>Clondition:</label><input id="q" style="width: 50%;">
+    <button onclick="app.update();">Update</button>
+  </div>
+  <div id="status"></div>
+  <div id="report"></div>
+</body>
+</html>
+resolve(content);
+}

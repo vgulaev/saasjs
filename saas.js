@@ -84,7 +84,8 @@ function service(req, res) {
   if ([
     'cost-data-weekly',
     'cost-data-staging',
-    'cost-data-account'
+    'cost-data-account',
+    'jira'
   ].indexOf(res.c.parsed['name']) != -1) {
     _require(`./${res.c.parsed['name']}`).route(res);
   } else if ('jarvis-msg' == res.c.parsed['name']) {

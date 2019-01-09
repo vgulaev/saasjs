@@ -2,17 +2,10 @@ const { execSync } = require('child_process');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const { compile } = require('./htmljs')
+const { compileAll } = require('./htmljs')
 var saasjs;
 
-// var cach = false;
-// async function recompile(filename) {
-//   if (cach) return;
-//   cach = true;
-//   console.log("begin Cach ==== " + cach);
-//   await compile(`content/htmljs/source/${filename}`);
-//   cach = false;
-//   console.log("start Cach ==== " + cach);
-// }
+compileAll();
 
 fs.watch('./content/htmljs/source', { encoding: 'utf-8' }, (eventType, filename) => {
   if (filename) {

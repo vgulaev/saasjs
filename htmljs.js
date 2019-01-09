@@ -31,7 +31,7 @@ exports.compile = function (filename) {
   append('});\n}\n');
 }
 
-function compileAll() {
+exports.compileAll = function () {
   var rootPath = 'content/htmljs/source';
   fs.readdir(rootPath, function(err, items) {
     items.forEach(function (item) {
@@ -43,6 +43,6 @@ function compileAll() {
 
 if (process.argv.length > 1) {
   if (__filename == process.argv[1]) {
-    compileAll();
+    exports.compileAll();
   }
 }

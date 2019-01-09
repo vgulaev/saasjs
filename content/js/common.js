@@ -26,9 +26,11 @@ function httpPostAsync(theUrl, data) {
 function wrap(tag, context, option) {
   var head = [tag];
   if (undefined != option) {
-    if ('style' in option) {
-      head.push(`style="${option['style']}"`);
-    }
+    ['style', 'href'].forEach(el => {
+      if (el in option) {
+        head.push(`${el}="${option[el]}"`);
+      }
+    });
   }
   return `<${head.join(' ')}>${context}</${tag}>`
 }
