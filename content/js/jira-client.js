@@ -3,22 +3,29 @@ function report() {
   this.statusTag = document.getElementById('status');
   this.qTag = document.getElementById('q');
 
-  this.qTag.addEventListener('keyup', (e) => {
-    if (event.keyCode === 13) {
-      this.update();
-    }
-    console.log('keyup: %s', event.keyCode);
+  this.qTag.addEventListener('keyup', (event) => {
+    this.update();
   });
 
-  this.checkRow = function () {
-    return true;
+  this.checkRow = function (row) {
+    if (undefined == this.q) {
+      return true;
+    }
+    let s = JSON.stringify(row);
+    console.log(this.q);
+    // console.log(s);
+    return this.q.reduce((acc, el) => acc && (s.indexOf(el) != -1),  true);
   }
 
   this.render = function () {
     let data = this.data;
     var innerHTML = '';
-    // var cond = document.getElementById('q').value;
-    // console.log(cond);
+    if (0 < this.qTag.value.length) {
+      this.q = this.qTag.value.split('&&').map(el => el.trim()).filter(el => el.length > 0);
+    } else {
+      this.q = undefined;
+    }
+
     innerHTML += data.data.issues.filter((row) => this.checkRow(row)).map((row, index) => {
       let td = '';
       td += wrap('td', index + 1);
@@ -28,9 +35,6 @@ function report() {
       td += wrap('td', row.fields.summary);
       return wrap('tr', td);
     }).join('');
-    // innerHTML += reportData.result.map((row) => {
-    //   return wrap('tr', row.map((el) => wrap('td', el)).join(''));
-    // }).join('');
 
     this.reportTag.innerHTML = wrap('table', innerHTML);
     // this.statusTag.innerHTML = 'Data updated at: ' + reportData.generatedAt;

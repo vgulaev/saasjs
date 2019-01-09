@@ -21,7 +21,6 @@ const fs = require('fs');
   </div>
   <div>
     <label>Clondition:</label><input id="q" style="width: 50%;">
-    <button onclick="app.update();">Update</button>
   </div>
   <div id="status"></div>
   <div id="report"></div>

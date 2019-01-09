@@ -30,6 +30,9 @@ const {isRoot} = require('../../../is-root');
     <a href="access.htmljs">Access</a>
   </div>
   }
+  <div>
+    <a href="about.htmljs">About</a>
+  </div>
 </body>
 </html>
 resolve(content);

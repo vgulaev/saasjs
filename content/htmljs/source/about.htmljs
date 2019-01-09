@@ -1,0 +1,35 @@
+if (undefined == res.sessionId) {
+  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
+  res.end();
+  reject();
+} else {
+const about = require('../../../about');
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SaaS DashBoard</title>
+</head>
+<body>
+  <div>
+    <a href="dashboard.htmljs">Dashboard</a>
+  </div>
+  <div>
+    <table>
+      <tr>
+        ['ext', 'lines', 'size'].forEach(el => {
+        <td>${el}</td>
+      });
+      </tr>
+      about.stat().forEach(el => {
+      <tr>
+        <td>${el[0]}</td>
+        <td>${el[1].line}</td>
+        <td>${el[1].size}</td>
+      </tr>
+    });
+    </table>
+  </div>
+</body>
+</html>
+resolve(content);
+}
