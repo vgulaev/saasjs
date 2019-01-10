@@ -5,7 +5,9 @@ const fs = require('fs');
 var alphabet = [];
 
 exports.alphabet = function () {
-  return alphabet;
+  // console.log(alphabet);
+  // alphabet = [];
+  return alphabet.sort();
 }
 
 exports.stat = function () {
@@ -19,7 +21,7 @@ exports.stat = function () {
     let parsed = path.parse(el);
     if ('.ico' != parsed['ext']) {
       content = fs.readFileSync(el, 'utf-8');
-      alphabet = [...new Set(alphabet.concat(content.split()))];
+      alphabet = [...new Set(alphabet.concat(content.split('')))];
     }
     if (parsed['ext'] in ss) {
       ss[parsed['ext']].count += 1;

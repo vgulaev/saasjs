@@ -7,6 +7,10 @@ const fs = require('fs');
 var config = new (require('./config').config)();
 var allowedEmail = JSON.parse(fs.readFileSync('config/authorized.json'));
 
+exports.reloadAuthorized = function () {
+  allowedEmail = JSON.parse(fs.readFileSync('config/authorized.json'));
+}
+
 exports.oauthlink = function () {
   return ['https://accounts.google.com/o/oauth2/v2/auth?',
  `client_id=${config['oauth2']['client_id']}&`,

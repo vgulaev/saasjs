@@ -11,6 +11,9 @@ const roleMng = require('../../../role-mng');
 </head>
 <body>
   <div>${roleMng.email(res)} role: ${roleMng.role(res)}</div>
+  <div>
+    <a href="index.htmljs">Index</a>
+  </div>
   if (-1 != ['root', 'CA'].indexOf(roleMng.role(res))) {
   <div>
     <a href="cost-weekly.htmljs#weekly">Weekly costs</a>
