@@ -1,4 +1,5 @@
-if (undefined == res.sessionId) {
+const roleMng = require('../../../role-mng');
+if (-1 == ['root', 'CA'].indexOf(roleMng.role(res))) {
   res.writeHead(302, {'Location': 'unauthorized.htmljs'});
   res.end();
   reject();

@@ -3,7 +3,7 @@ const http      = require('http');
 const https     = require('https');
 const path      = require('path');
 const url       = require('url');
-const {isRoot}  = require('./is-root')
+const {isRoot}  = require('./role-mng')
 
 const db = new (require('./easy-db').db)();
 var config = new (require('./config').config)();

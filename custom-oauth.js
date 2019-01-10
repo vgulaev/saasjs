@@ -51,10 +51,13 @@ exports.oauthcallback = function (myURL, res, env) {
       var expires = new Date;
       var parsed = JSON.parse(data);
       var decoded = jwt.decode(parsed['id_token']);
-      if (allowedEmail.indexOf(decoded['email']) != -1) {
+      if (decoded['email'] in allowedEmail != -1) {
         var sessionId = uuidv4();
-        db.data.session[sessionId] = {email: decoded['email'],
-          created_at: expires.toISOString()};
+        db.data.session[sessionId] = {
+          email: decoded['email'],
+          created_at: expires.toISOString(),
+          role: allowedEmail[decoded['email']].role
+        };
         db.save();
         expires.setDate(expires.getDate() + 30);
         res.writeHead(302, {

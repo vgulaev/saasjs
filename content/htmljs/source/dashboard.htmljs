@@ -3,15 +3,20 @@ if (undefined == res.sessionId) {
   res.end();
   reject();
 } else {
-const {isRoot} = require('../../../is-root');
+const roleMng = require('../../../role-mng');
 <!DOCTYPE html>
 <html>
 <head>
   <title>SaaS DashBoard</title>
 </head>
 <body>
+  <div>${roleMng.email(res)} role: ${roleMng.role(res)}</div>
+  if (-1 != ['root', 'CA'].indexOf(roleMng.role(res))) {
   <div>
-    <a href="cost-weekly.htmljs">Weekly costs</a>
+    <a href="cost-weekly.htmljs#weekly">Weekly costs</a>
+  </div>
+  <div>
+    <a href="cost-weekly.htmljs#monthly">Monthly costs</a>
   </div>
   <div>
     <a href="cost-staging.htmljs">Staging costs</a>
@@ -22,10 +27,11 @@ const {isRoot} = require('../../../is-root');
   <div>
     <a href="sql-console.htmljs">SQL Console</a>
   </div>
+  }
   <div>
     <a href="jira-crs.htmljs">Jira CRs</a>
   </div>
-  if (isRoot(res)) {
+  if (roleMng.isRoot(res)) {
   <div>
     <a href="access.htmljs">Access</a>
   </div>

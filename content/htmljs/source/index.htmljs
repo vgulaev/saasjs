@@ -6,6 +6,7 @@ const {oauthlink} = require(`${data.env.rootpath}/custom-oauth`);
   <title>SaaS center</title>
 </head>
 <link rel="stylesheet" href="common.css" type="text/css">
+<script type="text/javascript" src="common.js"></script>
 <body>
   <div>Welcome to SaaS Center</div>
   if (undefined == res.sessionId) {
@@ -16,7 +17,7 @@ const {oauthlink} = require(`${data.env.rootpath}/custom-oauth`);
     </div>
   }
   <div>
-    <button onclick="location.reload();">reload</button>
+    <button onclick="logout();">Log out</button>
   </div>
   <div>
     <span>Page generatet at (last): ${(new Date).toISOString()}</span>
