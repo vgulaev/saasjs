@@ -14,15 +14,15 @@ if (!isRoot(res)) {
 </head>
 <link rel="stylesheet" href="common.css" type="text/css">
 <script type="text/javascript" src="common.js"></script>
-<script type="text/javascript" src="access.js"></script>
+<script type="text/javascript" src="access-client.js"></script>
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
   </div>
   let list = JSON.parse(fs.readFileSync(`${res.c.env.rootpath}/config/authorized.json`, 'utf-8'));
-  list.forEach((el) => {
+  Object.keys(list).forEach((el) => {
     <div>
-      <span>${el}</span>
+      <span>${el}: ${JSON.stringify(list[el])}</span>
     </div>
   });
   <div>

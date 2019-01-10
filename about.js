@@ -2,6 +2,12 @@ const { execSync } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 
+var alphabet = [];
+
+exports.alphabet = function () {
+  return alphabet;
+}
+
 exports.stat = function () {
   let list = execSync('git ls-tree --full-tree -r --name-only HEAD')
     .toString()
@@ -9,10 +15,15 @@ exports.stat = function () {
   let ss = {};
 
   list.forEach(el => {
+    let content = '';
     let parsed = path.parse(el);
+    if ('.ico' != parsed['ext']) {
+      content = fs.readFileSync(el, 'utf-8');
+      alphabet = [...new Set(alphabet.concat(content.split()))];
+    }
     if (parsed['ext'] in ss) {
       ss[parsed['ext']].count += 1;
-      ss[parsed['ext']].line += fs.readFileSync(el, 'utf-8').split('\n').length;
+      ss[parsed['ext']].line += content.split('\n').length;
       ss[parsed['ext']].size += fs.statSync(el)["size"];
     } else {
       ss[parsed['ext']] = {

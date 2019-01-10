@@ -28,6 +28,9 @@ const about = require('../../../about');
       </tr>
     });
     </table>
+    <div>
+      <span>Alphabet: ${about.alphabet()}</span>
+    </div>
   </div>
 </body>
 </html>

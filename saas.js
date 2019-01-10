@@ -59,10 +59,15 @@ function static(req, res) {
   if ('.htmljs' == res.c.parsed['ext']) {
     var filename = `./content/htmljs/compiled/${res.c.parsed['name']}.html`;
     var data = {env: env};
-    _require(filename).build(res, data).then(function (content) {
-      res.writeHead(200, head);
-      res.end(content);
-    });
+    _require(filename).build(res, data)
+      .then(function (content) {
+        res.writeHead(200, head);
+        res.end(content);
+      })
+      .catch(err => {
+        console.log(err.message);
+        empty_res(res);
+      });
   } else {
     res.writeHead(200, head);
     if ('.js' == res.c.parsed['ext']) {
