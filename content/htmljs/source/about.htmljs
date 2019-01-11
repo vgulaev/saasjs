@@ -6,6 +6,7 @@ if (undefined == res.sessionId) {
 const about = require('../../../about');
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
   <title>SaaS DashBoard</title>
 </head>

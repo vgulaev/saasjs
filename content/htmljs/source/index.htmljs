@@ -2,6 +2,7 @@ const {oauthlink} = require(`${data.env.rootpath}/custom-oauth`);
 <!DOCTYPE html>
 <html>
 <!-- script type="text/javascript" src="js/index.js"></script-->
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
   <title>SaaS center</title>
 </head>

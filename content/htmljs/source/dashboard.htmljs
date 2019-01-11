@@ -6,6 +6,7 @@ if (undefined == res.sessionId) {
 const roleMng = require('../../../role-mng');
 <!DOCTYPE html>
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
   <title>SaaS DashBoard</title>
 </head>
