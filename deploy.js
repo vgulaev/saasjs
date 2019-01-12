@@ -6,5 +6,5 @@ function remote(cmd) {
 }
 
 remote('cd /data/saasjs && ./saasjs-pull');
-remote("ssh-agent bash -c 'ssh-add secrets/workXO.pem; git pull'");
+remote("cd /data/work_in_XO && ssh-agent bash -c 'ssh-add secrets/workXO.pem; git pull'");
 remote('cd /data/saasjs && ./saasjs-run');
