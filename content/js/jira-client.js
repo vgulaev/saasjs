@@ -40,8 +40,11 @@ function report() {
     // this.statusTag.innerHTML = 'Data updated at: ' + reportData.generatedAt;
   };
 
-  this.update = function () {
-    httpGetAsync('jira.srv?cr', (data) => {
+  this.update = function (href) {
+    if (href != undefined) {
+      location.hash = href;
+    }
+    httpGetAsync('jira.srv?' + location.hash.substring(1), (data) => {
       this.data = JSON.parse(data);
       this.render();
     });

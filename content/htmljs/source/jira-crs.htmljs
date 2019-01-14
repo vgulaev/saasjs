@@ -1,10 +1,3 @@
-if (undefined == res.sessionId) {
-  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
-  res.end();
-  reject();
-} else {
-const fs = require('fs');
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +11,8 @@ const fs = require('fs');
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
+    <a href="javascript:void(0)" onclick="app.update('cr');">Jira CRs</a>
+    <a href="javascript:void(0)" onclick="app.update('saas');">Jira SaaS</a>
   </div>
   <div>
     <label>Clondition:</label><input id="q" style="width: 50%;">
@@ -27,4 +22,3 @@ const fs = require('fs');
 </body>
 </html>
 resolve(content);
-}

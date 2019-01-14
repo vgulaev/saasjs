@@ -1,8 +1,3 @@
-if (undefined == res.sessionId) {
-  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
-  res.end();
-  reject();
-} else {
 const roleMng = require('../../../role-mng');
 <!DOCTYPE html>
 <html>
@@ -33,7 +28,10 @@ const roleMng = require('../../../role-mng');
   </div>
   }
   <div>
-    <a href="jira-crs.htmljs">Jira CRs</a>
+    <a href="jira-crs.htmljs#cr">Jira CRs</a>
+  </div>
+  <div>
+    <a href="jira-crs.htmljs#saas">Jira SaaS</a>
   </div>
   if (roleMng.isRoot(res)) {
   <div>
@@ -46,4 +44,3 @@ const roleMng = require('../../../role-mng');
 </body>
 </html>
 resolve(content);
-}
