@@ -159,7 +159,7 @@ function respond(req, res) {
     if ('oauthcallback' == res.c.parsed['name']) {
       require('./custom-oauth').oauthcallback(res.c.urlParsed, res, env);
       return;
-    } else if (-1 != ['unauthorized.htmljs', 'index.htmljs'].indexOf(res.c.parsed['name'])) {
+    } else if (-1 != ['unauthorized', 'index'].indexOf(res.c.parsed['name'])) {
       static(req, res);
       return;
     }
