@@ -28,7 +28,7 @@ function getJiraLogin(username, password) {
   });
 }
 
-function getDataFromJira() {
+exports.getDataFromJira = function () {
   getJiraLogin(adCred.username, adCred.password)
     .then((session) => {
       var searchArgs = {
@@ -72,6 +72,6 @@ exports.route = function(res) {
 
 if (process.argv.length > 1) {
   if (__filename == process.argv[1]) {
-    getDataFromJira();
+    exports.getDataFromJira();
   }
 }

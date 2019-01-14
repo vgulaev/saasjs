@@ -2,26 +2,13 @@ function report() {
   this.reportTag = document.getElementById('report');
   this.statusTag = document.getElementById('status');
   this.qTag = document.getElementById('q');
-  // this.qTag.onchange = (event) => {
-  //   this.qTag.value = this.qTag.value.replace(/[' \s]/g, '');
-  //   location.hash = 'q=' + this.qTag.value;
-  // }
-  // this.qTag.addEventListener("keyup", (event) => {
-  //   event.preventDefault();
-  //   if (event.keyCode === 13) {
-  //     this.update();
-  //   }
-  // });
-
-  // if ('' != location.hash) {
-  //   this.qTag.value = location.hash.substring(3);
-  // }
 
   this.render = function (data) {
     if ("error" == data.status) {
       this.statusTag.innerHTML = data.msg;
+      this.reportTag.innerHTML = '';
+      return;
     }
-    console.log(data);
     var reportData = data;
     var innerHTML = '';
 

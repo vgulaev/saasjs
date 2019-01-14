@@ -5,7 +5,7 @@ const path      = require('path');
 const url       = require('url');
 const {isRoot}  = require('./role-mng')
 
-const db = new (require('./easy-db').db)();
+const db = new (require('./easy-db').easyDB)();
 var config = new (require('./config').config)();
 var env = {
   rootpath: __dirname,
@@ -155,6 +155,24 @@ function respond(req, res) {
   setSessionId(req, res);
   setGzipStatus(req, res);
 
+  if (req.method === 'GET') {
+    if ('oauthcallback' == res.c.parsed['name']) {
+      require('./custom-oauth').oauthcallback(res.c.urlParsed, res, env);
+      return;
+    } else if (-1 != ['unauthorized.htmljs', 'index.htmljs'].indexOf(res.c.parsed['name'])) {
+      static(req, res);
+      return;
+    }
+  }
+
+  if (undefined == res.sessionId) {
+    res.writeHead(302, {
+      'Location': 'unauthorized.htmljs',
+    });
+    res.end();
+    return;
+  }
+
   if (req.method === 'POST') {
     if (('access' == res.c.parsed['name']) && isRoot(res)) {
       getBody(req)
@@ -162,19 +180,13 @@ function respond(req, res) {
     } else if ('sql-console' == res.c.parsed['name']){
       getBody(req)
         .then((data) => _require('./sql-console').post(res, data));
-    } else {
-      empty_res(res);
     }
   } else if (req.method === 'GET') {
-    if ('oauthcallback' == res.c.parsed['name']) {
-      require('./custom-oauth').oauthcallback(res.c.urlParsed, res, env);
-    } else if ('.srv' == res.c.parsed['ext']) {
+    if ('.srv' == res.c.parsed['ext']) {
       service(req, res);
     } else {
       static(req, res);
     }
-  } else {
-    empty_res(res);
   }
 };
 

@@ -18,7 +18,7 @@ let {acc} = require('../../../lib/staging-accounts.js');
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
-    <a href="cost-weekly.htmljs">Weekly costs</a>
+    <a href="cost-weekly.htmljs#weekly">Weekly costs</a>
     <button onclick="app.requestDataFromAWS();">Sync cost</button>
     Object.keys(acc).forEach((el) => {
       <a href="cost-account.htmljs#q=${acc[el]}">${el}</a>

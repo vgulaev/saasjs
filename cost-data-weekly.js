@@ -71,15 +71,7 @@ function exportToFile(session, granularity) {
 }
 
 exports.route = function(res) {
-  if (undefined == res.sessionId) {
-    res.writeHead(302, {
-      'Location': 'unauthorized.htmljs',
-    });
-    res.end();
-    return;
-  } else {
-    report(res);
-  }
+  report(res);
 }
 
 exports.update = function(granularity) {
@@ -98,7 +90,6 @@ function report(res) {
     status: 'success',
     data: fs.readFileSync(`${fileReport}-${res.c.urlParsed['query']}.json`, 'utf-8')
   };
-
   sendJSON(res, data);
 }
 

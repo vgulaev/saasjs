@@ -17,7 +17,7 @@ if (-1 == ['root', 'CA'].indexOf(roleMng.role(res))) {
 <body>
   <div>
     <a href="dashboard.htmljs">Dashboard</a>
-    <a href="cost-weekly.htmljs">Weekly costs</a>
+    <a href="cost-weekly.htmljs#weekly">Weekly costs</a>
     <a href="cost-staging.htmljs">Staging cost</a>
   </div>
   <div>
