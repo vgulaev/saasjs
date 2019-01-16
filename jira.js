@@ -28,33 +28,37 @@ function getJiraLogin(username, password) {
 }
 
 function requestData(session, jql, filename) {
-  var searchArgs = {
-    headers: {
-      // Set the cookie from the session information
-      cookie: session,
-      'Content-Type': 'application/json'
-    },
-    data: {
-      fields: ['assignee', 'updated', 'summary'], //,issuetype,project,,reporter,created,resolutiondate,updated,summary,status",
-      jql: jql
-    }
-  };
-  client.post('https://jira.devfactory.com/rest/api/2/search', searchArgs, function(searchResult, response) {
-    console.log('status code:', response.statusCode);
-    if (searchResult instanceof Buffer) {
-      console.log('search result:', searchResult.toString());
-    } else {
-      fs.writeFileSync(`log/tmp/${filename}`, JSON.stringify(searchResult));
-      console.log(JSON.stringify(searchResult));
-    }
+  return new Promise(function(resolve, reject) {
+    var searchArgs = {
+      headers: {
+        // Set the cookie from the session information
+        cookie: session,
+        'Content-Type': 'application/json'
+      },
+      data: {
+        fields: ['assignee', 'updated', 'summary'], //,issuetype,project,,reporter,created,resolutiondate,updated,summary,status",
+        jql: jql
+      }
+    };
+    client.post('https://jira.devfactory.com/rest/api/2/search', searchArgs, function(searchResult, response) {
+      console.log('status code:', response.statusCode);
+      if (searchResult instanceof Buffer) {
+        console.log('search result:', searchResult.toString());
+      } else {
+        fs.writeFileSync(`log/tmp/${filename}`, JSON.stringify(searchResult));
+        console.log(JSON.stringify(searchResult));
+        resolve();
+      }
+    });
   });
 }
 
 exports.getDataFromJira = function () {
   getJiraLogin(adCred.username, adCred.password)
     .then((session) => {
-      requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("Change Request") ORDER BY updated DESC', 'jiraCr.json');
-      requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("SaaS Internal", "SaaS Request") ORDER BY updated DESC', 'jiraSaaS.json');
+      // requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("Change Request") ORDER BY updated DESC', 'jiraCr.json');
+      // requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("SaaS Internal", "SaaS Request") ORDER BY updated DESC', 'jiraSaaS.json');
+      requestData(session, 'type in ("Change Request", "SaaS Request", "SaaS Internal") AND resolution = Done  AND project in ("EY.Core -EngineYard Cloud Paas") and resolved >= "2019-01-01" ORDER BY updated', 'jiraDone.json');
     });
 }
 
@@ -73,6 +77,8 @@ exports.route = function(res) {
     sendJSON(res, {status: 'ok', data: JSON.parse(fs.readFileSync('log/tmp/jiraCr.json'))});
   } else if ("saas" == q) {
     sendJSON(res, {status: 'ok', data: JSON.parse(fs.readFileSync('log/tmp/jiraSaaS.json'))});
+  } else if ("done" == q) {
+    sendJSON(res, {status: 'ok', data: JSON.parse(fs.readFileSync('log/tmp/jiraDone.json'))});
   }
 }
 

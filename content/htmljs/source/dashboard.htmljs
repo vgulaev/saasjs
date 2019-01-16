@@ -33,6 +33,9 @@ const roleMng = require('../../../role-mng');
   <div>
     <a href="jira-crs.htmljs#saas">Jira SaaS</a>
   </div>
+  <div>
+    <a href="jira-crs.htmljs#done">Jira Done</a>
+  </div>
   if (roleMng.isRoot(res)) {
   <div>
     <a href="access.htmljs">Access</a>

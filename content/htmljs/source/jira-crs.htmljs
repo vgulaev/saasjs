@@ -13,6 +13,7 @@
     <a href="dashboard.htmljs">Dashboard</a>
     <a href="javascript:void(0)" onclick="app.update('cr');">Jira CRs</a>
     <a href="javascript:void(0)" onclick="app.update('saas');">Jira SaaS</a>
+    <a href="javascript:void(0)" onclick="app.update('done');">Jira Done</a>
   </div>
   <div>
     <label>Clondition:</label><input id="q" style="width: 50%;">
