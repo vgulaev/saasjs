@@ -18,15 +18,15 @@ const roleMng = require('../../../role-mng');
     <a href="cost-weekly.htmljs#monthly">Monthly costs</a>
   </div>
   <div>
-    <a href="cost-staging.htmljs">Staging costs</a>
-  </div>
-  <div>
     <a href="cost-account.htmljs">Cost by account</a>
   </div>
   <div>
     <a href="sql-console.htmljs">SQL Console</a>
   </div>
   }
+  <div>
+    <a href="cost-staging.htmljs">Staging costs</a>
+  </div>
   <div>
     <a href="jira-crs.htmljs#cr">Jira CRs</a>
   </div>

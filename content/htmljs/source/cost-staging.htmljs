@@ -1,9 +1,3 @@
-const roleMng = require('../../../role-mng');
-if (-1 == ['root', 'CA'].indexOf(roleMng.role(res))) {
-  res.writeHead(302, {'Location': 'unauthorized.htmljs'});
-  res.end();
-  reject();
-} else {
 let {acc} = require('../../../lib/staging-accounts.js');
 <!DOCTYPE html>
 <html>
@@ -29,4 +23,3 @@ let {acc} = require('../../../lib/staging-accounts.js');
 </body>
 </html>
 resolve(content);
-}
