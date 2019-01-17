@@ -16,7 +16,6 @@ fs.watch('./content/htmljs/source', { encoding: 'utf-8' }, (eventType, filename)
 
 function stop() {
   saasjs.kill();
-  // var result = execSync('kill -9 "$(< log/saasjs.pid)"');
 }
 
 function start() {
@@ -29,7 +28,6 @@ function start() {
   saasjs.stderr.on('data', (data) => {
     console.log(data.toString());
   });
-  // var result = execSync('node saas.js && echo $! > log/saasjs.pid');
 }
 
 fs.watch('./', { encoding: 'utf-8' }, (eventType, filename) => {
