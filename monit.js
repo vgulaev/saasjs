@@ -1,9 +1,11 @@
 const fs = require('fs');
 const { execSync } = require('child_process');
 
-if (!fs.existsSync('log/pid.log')) {
-  fs.writeFileSync('log/pid.log', '');
-}
+['log/pid.log', 'log/monit.pid'].forEach(filename => {
+  if (!fs.existsSync(filename)) {
+    fs.writeFileSync(filename, 'xxx\n');
+  }
+});
 
 function checkAndRun() {
   let pid = fs.readFileSync('log/saasjs.pid', 'utf-8').trim();
@@ -17,4 +19,13 @@ function checkAndRun() {
   setTimeout(checkAndRun, 2000);
 }
 
-checkAndRun();
+let pid = fs.readFileSync('log/monit.pid', 'utf-8').trim();
+
+try {
+  let res = execSync(`ps aux | grep [${pid[0]}]${pid.substring(1)}`).toString();
+  console.log('monit already run');
+} catch (e) {
+  console.log('run checkAndRun');
+  fs.writeFileSync('log/monit.pid', process.pid);
+  checkAndRun();
+}

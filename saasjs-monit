@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+node monit.js>/dev/null 2>&1 &
