@@ -7,4 +7,4 @@ function remote(cmd) {
 
 remote('cd /data/saasjs && ./saasjs-pull');
 remote("cd /data/work_in_XO && ssh-agent bash -c 'ssh-add secrets/workXO.pem; git pull'");
-remote('cd /data/saasjs && node monit.js >/dev/null 2>&1 &');
+remote('cd /data/saasjs && ./saasjs-monit');
