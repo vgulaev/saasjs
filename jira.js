@@ -41,13 +41,12 @@ function requestData(session, jql, filename) {
       }
     };
     client.post('https://jira.devfactory.com/rest/api/2/search', searchArgs, function(searchResult, response) {
-      console.log('status code:', response.statusCode);
+      console.log('request:', filename, ' status code:', response.statusCode);
       if (searchResult instanceof Buffer) {
-        console.log('search result:', searchResult.toString());
+        resolve(0);
       } else {
         fs.writeFileSync(`log/tmp/${filename}`, JSON.stringify(searchResult));
-        console.log(JSON.stringify(searchResult));
-        resolve();
+        resolve(1);
       }
     });
   });
@@ -56,29 +55,36 @@ function requestData(session, jql, filename) {
 exports.getDataFromJira = function () {
   getJiraLogin(adCred.username, adCred.password)
     .then((session) => {
-      // requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("Change Request") ORDER BY updated DESC', 'jiraCr.json');
-      // requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("SaaS Internal", "SaaS Request") ORDER BY updated DESC', 'jiraSaaS.json');
-      requestData(session, 'type in ("Change Request", "SaaS Request", "SaaS Internal") AND resolution = Done  AND project in ("EY.Core -EngineYard Cloud Paas") and resolved >= "2019-01-01" ORDER BY updated', 'jiraDone.json');
+      let status = [];
+      requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("Change Request") ORDER BY updated DESC', 'jira-cr.json')
+        .then(res => {
+          status.push(res);
+          return requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("SaaS Internal", "SaaS Request") ORDER BY updated DESC', 'jira-saas.json');
+        })
+        .then(res => {
+          status.push(res);
+          let d = new Date;
+          d.setDate(d.getDate() - 6 - d.getDay());
+          return requestData(session, `type in ("Change Request", "SaaS Request", "SaaS Internal") AND resolution = Done  AND project in ("EY.Core -EngineYard Cloud Paas") and resolved >= "${d.toISOString().substring(0, 10)}" ORDER BY updated`, 'jira-done.json');
+        })
+        .then(res => {
+          status.push(res);
+          for (el of status) {
+            if (0 == el) {
+              console.log('Some request fail');
+              break;
+            }
+          }
+        });
     });
 }
 
 exports.route = function(res) {
-  if (undefined == res.sessionId) {
-    res.writeHead(302, {
-      'Location': 'unauthorized.htmljs',
-    });
-    res.end();
-    return;
-  }
   let q = res.c.urlParsed['query'];
   if (undefined == q) {
     sendJSON(res, data = {status: 'Should use any filter'});
-  } else if ("cr" == q) {
-    sendJSON(res, {status: 'ok', data: JSON.parse(fs.readFileSync('log/tmp/jiraCr.json'))});
-  } else if ("saas" == q) {
-    sendJSON(res, {status: 'ok', data: JSON.parse(fs.readFileSync('log/tmp/jiraSaaS.json'))});
-  } else if ("done" == q) {
-    sendJSON(res, {status: 'ok', data: JSON.parse(fs.readFileSync('log/tmp/jiraDone.json'))});
+  } else if (-1 != ['cr', 'saas', 'done'].indexOf(q)) {
+    sendJSON(res, {status: 'ok', data: JSON.parse(fs.readFileSync(`log/tmp/jira-${q}.json`))});
   }
 }
 
