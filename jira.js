@@ -18,8 +18,15 @@ function getJiraLogin(username, password) {
     };
     client.post('https://jira.devfactory.com/rest/auth/1/session', loginArgs, function(data, response) {
       if (response.statusCode == 200) {
+        let routeid = 'ROUTEID';
+        for (e of response.headers['set-cookie']) {
+          if (e.startsWith(routeid)) {
+            routeid = e;
+            break;
+          }
+        }
         var session = data.session;
-        resolve(session.name + '=' + session.value);
+        resolve({routeid: routeid, session: session.name + '=' + session.value});
       } else {
         throw 'Login failed :(';
       }
@@ -32,7 +39,7 @@ function requestData(session, jql, filename) {
     var searchArgs = {
       headers: {
         // Set the cookie from the session information
-        cookie: session,
+        cookie: [session.session, session.routeid].join(';'),
         'Content-Type': 'application/json'
       },
       data: {
