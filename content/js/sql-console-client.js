@@ -20,7 +20,7 @@ function report() {
     innerHTML += reportData.result.map((row) => {
       return wrap('tr', row.map((el) => wrap('td', el)).join(''));
     }).join('');
-
+    this.statusTag.innerHTML = 'Ok';
     this.reportTag.innerHTML = wrap('table', innerHTML);
   };
 
