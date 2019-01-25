@@ -38,7 +38,6 @@ function first() {
   // cp('work_in_XO/secrets/428226229991.json');
   // cp('work_in_XO/secrets/540235812892.json');
   // cp('work_in_XO/secrets/mysql_cred.json');
-  // libssl-dev
   // remote('sudo apt-get install -y ruby');
 }
 

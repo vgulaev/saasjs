@@ -1,8 +1,12 @@
 function report() {
-  this.reportTag = document.getElementById('report');
-  this.statusTag = document.getElementById('status');
-  this.qTag = document.getElementById('q');
-  this.qnameTag = document.getElementById('qname');
+  this.reportTag  = document.getElementById('report');
+  this.statusTag  = document.getElementById('status');
+  this.qTag       = document.getElementById('q');
+  this.qNameTag   = document.getElementById('qName');
+  this.qSourceTag = document.getElementById('qSource');
+  var rect1 = this.qSourceTag.getBoundingClientRect();
+  var rect2 = this.qTag.getBoundingClientRect();
+  this.qTag.style.width = (rect1.right - rect2.left) + 'px';
 
   this.render = function (data) {
     if ("error" == data.status) {
@@ -35,7 +39,7 @@ function report() {
 
   this.add = function () {
 
-    httpPostAsync('sql-console.srv', JSON.stringify({name: this.qnameTag, q: this.qTag.value}))
+    httpPostAsync('sql-console.srv', JSON.stringify({name: this.qNameTag, q: this.qTag.value}))
       .then((data) => {
         this.render(JSON.parse(data));
       });
