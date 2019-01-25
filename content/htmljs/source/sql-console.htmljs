@@ -19,14 +19,18 @@ if (-1 == ['root', 'CA'].indexOf(roleMng.role(res))) {
     <a href="dashboard.htmljs">Dashboard</a>
   </div>
   <div>
+    <input id="qname">
+  </div>
+  <div>
     <textarea id="q">
 content += "select month, aws_id, instance_type, ond/tot * 100, ond from ( "
 content += "SELECT month, aws_id, instance_type, sum(hour) tot, sum(if('On Demand Instances' = purchase_type, hour, 0)) ond FROM eycost.awsri "
 content += "group by  month, aws_id, instance_type) t1 "
 content += "where month = '2018-12-01' and instance_type like 't2%' "
 content += "order by ond desc"
-</textarea>
+    </textarea>
     <button onclick="app.update();">Query</button>
+    <button onclick="app.add();">Add</button>
   </div>
   <div id="status"></div>
   <div id="report"></div>

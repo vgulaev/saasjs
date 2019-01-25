@@ -2,6 +2,7 @@ const {sendJSON} = require('./sendJSON');
 const {query} = require('./easy-db');
 
 exports.post = function (res, data) {
+  console.log(data);
   let rows = [];
   let header = [];
   query(data, result => {

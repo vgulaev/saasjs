@@ -2,6 +2,7 @@ function report() {
   this.reportTag = document.getElementById('report');
   this.statusTag = document.getElementById('status');
   this.qTag = document.getElementById('q');
+  this.qnameTag = document.getElementById('qname');
 
   this.render = function (data) {
     if ("error" == data.status) {
@@ -31,6 +32,14 @@ function report() {
         });
     }
   };
+
+  this.add = function () {
+
+    httpPostAsync('sql-console.srv', JSON.stringify({name: this.qnameTag, q: this.qTag.value}))
+      .then((data) => {
+        this.render(JSON.parse(data));
+      });
+  }
 }
 
 window.addEventListener('load', function(event) {

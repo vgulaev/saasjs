@@ -1,4 +1,5 @@
 const roleMng = require('../../../role-mng');
+const { execSync } = require('child_process');
 <!DOCTYPE html>
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -43,6 +44,11 @@ const roleMng = require('../../../role-mng');
   }
   <div>
     <a href="about.htmljs">About</a>
+  </div>
+  <div>
+    var gitStatus = execSync('git log -1').toString().split('\n').forEach(line => {
+    <div>${line}</div>
+    });
   </div>
 </body>
 </html>
