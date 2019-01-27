@@ -66,13 +66,13 @@ exports.getDataFromJira = function () {
       requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("Change Request") ORDER BY updated DESC', 'jira-cr.json')
         .then(res => {
           status.push(res);
-          return requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("SaaS Internal", "SaaS Request") ORDER BY updated DESC', 'jira-saas.json');
+          return requestData(session, 'resolution = Unresolved and project in ("EY.Core -EngineYard Cloud Paas") and type in ("SaaS Internal", "SaaS Request", "SaaS Incident") ORDER BY updated DESC', 'jira-saas.json');
         })
         .then(res => {
           status.push(res);
           let d = new Date;
           d.setDate(d.getDate() - 6 - d.getDay());
-          return requestData(session, `type in ("Change Request", "SaaS Request", "SaaS Internal") AND resolution = Done  AND project in ("EY.Core -EngineYard Cloud Paas") and resolved >= "${d.toISOString().substring(0, 10)}" ORDER BY updated`, 'jira-done.json');
+          return requestData(session, `type in ("Change Request", "SaaS Request", "SaaS Internal", "SaaS Incident") AND resolution = Done  AND project in ("EY.Core -EngineYard Cloud Paas") and resolved >= "${d.toISOString().substring(0, 10)}" ORDER BY updated`, 'jira-done.json');
         })
         .then(res => {
           status.push(res);

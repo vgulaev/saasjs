@@ -29,13 +29,13 @@ const { execSync } = require('child_process');
     <a href="cost-staging.htmljs">Staging costs</a>
   </div>
   <div>
-    <a href="jira-crs.htmljs#cr">Jira CRs</a>
+    <a href="jira.htmljs#cr">Jira CRs</a>
   </div>
   <div>
-    <a href="jira-crs.htmljs#saas">Jira SaaS</a>
+    <a href="jira.htmljs#saas">Jira SaaS</a>
   </div>
   <div>
-    <a href="jira-crs.htmljs#done">Jira Done</a>
+    <a href="jira.htmljs#done">Jira Done</a>
   </div>
   if (roleMng.isRoot(res)) {
   <div>
