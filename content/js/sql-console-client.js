@@ -17,12 +17,12 @@ function report() {
     var reportData = data;
     var innerHTML = '';
 
-    innerHTML += wrap('tr', reportData.header.map((el) => {
+    innerHTML += wrap('tr', wrap('td', 'N') + reportData.header.map((el) => {
       return wrap('td', el);
     }).join(''));
 
-    innerHTML += reportData.result.map((row) => {
-      return wrap('tr', row.map((el) => wrap('td', el)).join(''));
+    innerHTML += reportData.result.map((row, index) => {
+      return wrap('tr', wrap('td', index + 1) + row.map((el) => wrap('td', el)).join(''));
     }).join('');
     this.statusTag.innerHTML = 'Ok';
     this.reportTag.innerHTML = wrap('table', innerHTML);

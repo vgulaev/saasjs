@@ -72,7 +72,14 @@ exports.queryOverSsh = function(source) {
 
   this.makeQuery = () => {
       let sshToMySQL = `ssh -i ${config.sshProd} root@ec2-35-174-170-252.compute-1.amazonaws.com -L ${port}:localhost:3306`;
-      let q = "SELECT type, id, provisioned_id, provisioner_id FROM awsm_production.providers where provisioned_id = '956186766273'";
+      let q = `SELECT customers.id, customers.name cname, environments.name ename, instances.amazon_id, instances.status, min(volumes.encrypted) encrypted  FROM instances
+INNER JOIN customers ON instances.customer_id = customers.id
+and customers.name IN ('meta', 'ey-dev', 'App-Support-Tools', 'Webteam')
+INNER JOIN environments ON instances.environment_id = environments.id
+INNER JOIN volumes ON instances.id = volumes.instance_id
+where instances.deleted_at is null and instances.deprovisioned_at is null
+group by customers.id, cname, ename, instances.amazon_id, instances.status
+order by encrypted desc, customers.name, environments.name, instances.amazon_id`;
       // let q = 'sdfsdfsdf';
 
       saasjs = spawn(sshToMySQL, [], {shell: true});
