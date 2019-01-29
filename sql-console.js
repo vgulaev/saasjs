@@ -1,5 +1,5 @@
 const {sendJSON} = require('./sendJSON');
-const {query} = require('./easy-db');
+const {query, queryOverSsh} = require('./easy-db');
 
 function securityCheck(data) {
   let lowerText = data.toLowerCase();
@@ -11,14 +11,20 @@ function securityCheck(data) {
   return true;
 }
 
-exports.post = function (res, data) {
-  if (!securityCheck(data)) {
+exports.post = function (res, strData) {
+  let data = JSON.parse(strData);
+  console.log(data);
+  if (!securityCheck(data.q)) {
     sendJSON(res, {status: 'error', msg: 'Only SELECT statement allowed'});
     return;
   }
   let rows = [];
   let header = [];
-  query(data, result => {
+  let queryFunction = query;
+  if ('awsm_prod' == data.s) {
+    queryFunction = (new queryOverSsh(data.s)).query;
+  }
+  queryFunction(data.q, result => {
       rows.push(result);
     }, meta => {
       header = meta.map(el => el.name);

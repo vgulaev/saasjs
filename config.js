@@ -13,7 +13,7 @@ exports.config = function () {
       schema: 'eycost'
   };
 
-  if ('dev' == this.host) {
+  if ('dev' == this.deployment_environment) {
     this.JSONspace = 2;
   } else {
     this.JSONspace = 0;

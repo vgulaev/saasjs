@@ -19,7 +19,7 @@ if (-1 == ['root', 'CA'].indexOf(roleMng.role(res))) {
     <a href="dashboard.htmljs">Dashboard</a>
   </div>
   <div id="paramsDiv">
-    <label>Name:</label><input id="qName"><label>Source:</label><input id="qSource" value="awsm">
+    <label>Name:</label><input id="qName"><label>Source:</label><input id="qSource" value="awsm_prod">
   </div>
   <div id="qDiv">
     <textarea id="q">

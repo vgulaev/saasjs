@@ -30,7 +30,7 @@ function report() {
 
   this.update = function () {
     if (this.qTag.value.length > 3) {
-      httpPostAsync('sql-console.srv', this.qTag.value)
+      httpPostAsync('sql-console.srv', JSON.stringify({s: this.qSourceTag.value, q: this.qTag.value}))
         .then((data) => {
           this.render(JSON.parse(data));
         });
@@ -38,8 +38,7 @@ function report() {
   };
 
   this.add = function () {
-
-    httpPostAsync('sql-console.srv', JSON.stringify({name: this.qNameTag, q: this.qTag.value}))
+    httpPostAsync('sql-console.srv', JSON.stringify({s:this.qSourceTag.value, name: this.qNameTag.value, q: this.qTag.value}))
       .then((data) => {
         this.render(JSON.parse(data));
       });
@@ -50,4 +49,3 @@ window.addEventListener('load', function(event) {
   app = new report();
   app.update();
 });
-
